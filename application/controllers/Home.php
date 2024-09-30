@@ -259,6 +259,7 @@ class Home extends CI_Controller {
 		}
 	}
 		
+	/** --------------------------Social Media Accounts in Mobile---------------------------- */
 	// Fetch social media accounts
 	public function fetch_social_media_accounts()
 	{
@@ -339,7 +340,46 @@ class Home extends CI_Controller {
 		}
 	}
 
-	// Delete  the social media accounts from mobile 
+	// Save the social media accounts in the mobile 
+	public function save_social_media_account() {
+		$data['mobile_id'] = $this->input->post('mobile_id');
+		$data['platform'] = $this->input->post('platform');
+		$data['app_series'] = $this->input->post('app_series');
+		$data['account'] = $this->input->post('account_id');
+
+		if ($data['mobile_id'] && $data['platform'] && $data['app_series'] && $data['account']) {
+			$saved = $this->Crud->save_social_media_account($data);
+			if ($saved) {
+				echo $saved;
+			} else {
+				echo false;
+			}
+		} else {
+			echo false;
+		}
+	}
+
+	// Update the social media accounts in the mobile 
+	public function update_social_media_account() {
+		$accountId = $this->input->post('id');
+		$data['mobile_id'] = $this->input->post('mobile_id');
+		$data['platform'] = $this->input->post('platform');
+		$data['app_series'] = $this->input->post('app_series');
+		$data['account'] = $this->input->post('account_id');
+
+		if ($data['mobile_id'] && $data['platform'] && $data['app_series'] && $data['account']) {
+			$updated = $this->Crud->update_social_media_account($data, $accountId);
+			if ($updated) {
+				echo $updated;
+			} else {
+				echo false;
+			}
+		} else {
+			echo false;
+		}
+	}
+
+	// Delete the social media accounts from mobile 
 	public function delete_social_media_account() {
 		$accountId = $this->input->post('id');
 		$platform = $this->input->post('platform');
@@ -560,6 +600,7 @@ class Home extends CI_Controller {
         echo json_encode($response);
     }
 	
+	/** ------------------------------Facebook Page Management---------------------------- */
 	// Facebook Page Management
 	public function fb_page_management()
 	{
@@ -646,13 +687,13 @@ class Home extends CI_Controller {
 			redirect(base_url() . 'home/login', 'refresh');
 		}
 	}
-
 	
+	/** ------------------------------Facebook Profile Management---------------------------- */
 	// Facebook Profile Management
 	public function fb_profile_management()
 	{
 		if ($this->session->has_userdata('login')) {
-			$page['result'] = $this->Crud->get_facebook_page_data();
+			$page['result'] = $this->Crud->get_facebook_profile_data();
 			$this->load->view('header');
 			$this->load->view('fb_profile_management', $page);
 		} else {

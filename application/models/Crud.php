@@ -198,6 +198,7 @@ class Crud extends CI_Model
         }
 	}
 
+	// Delete the social media account from the mobile
 	public function delete_social_media_account($accountId, $platform) {
 		$this->db->where('account', $accountId);
 		$this->db->where('platform', $platform);
@@ -210,6 +211,36 @@ class Crud extends CI_Model
 
         return true;
 	}
+
+	// Save the social media account in the mobile
+	public function save_social_media_account($data) {
+		if($data['platform'] == 'facebook') {
+			$this->db->where('account_id', $data['account']);
+			$this->db->update('fb_account_management', ['availability' => 0]);
+		}
+
+		$this->db->insert('social_media_accounts', $data);
+
+        return true;
+	}
+
+	// Update the social media account in the mobile
+	public function update_social_media_account($data, $accountId) {
+		if($accountId != $data['account']) {
+			$this->db->where('account_id', $accountId);
+			$this->db->update('fb_account_management', ['availability' => 1]);
+		}
+
+		if($data['platform'] == 'facebook') {
+			$this->db->where('account_id', $data['account']);
+			$this->db->update('fb_account_management', ['availability' => 0]);
+		}
+		$this->db->where('account', $accountId);
+		$this->db->update('social_media_accounts', $data);
+
+        return true;
+	}
+
 	// Update the availability flag 0
 	public function update_facebook_availability($account, $table) {
 		$this->db->where('account_id', $account);
@@ -280,14 +311,14 @@ class Crud extends CI_Model
 	// Get facebook profile data
 	public function get_facebook_profile_data()
 	{
-		$query = $this->db->select('*')->from('fb_page_management')->get();
+		$query = $this->db->select('*')->from('fb_profile_management')->get();
 		return $query->result_array();
 	}
 
 	// Add new facebook page
 	public function insert_facebook_profile($data)
 	{
-		$this->db->insert('fb_page_management', $data);
+		$this->db->insert('fb_profile_management', $data);
 		return $this->db->affected_rows();
 	}
 
@@ -295,7 +326,7 @@ class Crud extends CI_Model
 	public function edit_facebook_profile($data)
 	{
 		$this->db->where('id', $data["id"]);
-		$this->db->update('fb_page_management', $data);
+		$this->db->update('fb_profile_management', $data);
 		return $this->db->affected_rows();
 	}
 

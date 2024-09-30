@@ -37,54 +37,81 @@
 
                                 <div class="form-group">
                                     <label>Select Profile Id<span style="color:#FF0000;"><sup>*</sup></span></label>
-                                    <select name="profile_id" id="profile_id" class="form-control profile_id" required>
-                                        <option Selected value="">Select Profile Id</option>
+                                    <select name="account_id" id="account_id" class="form-control account_id" required>
+                                        <option Selected value="">Select Account Id</option>
                                     </select>
                                 </div>
 
                                 <div class="form-group">
                                     <label>Select Profile Name<span style="color:#FF0000;"><sup>*</sup></span></label>
-                                    <select name="profile_name" id="profile_name" class="form-control profile_name" required>
-                                        <option Selected value="">Select Profile Name</option>
+                                    <select name="account_name" id="account_name" class="form-control account_name" required>
+                                        <option Selected value="">Select Account Name</option>
                                     </select>
                                 </div>
 
                                 <div class="form-group">
-									<label>Enter Page Name<span style="color:#FF0000;"><sup>*</sup></span></label>
-									<input type="text" name="page_name" id="page_name" class="form-control page_name" placeholder="Enter Page Name" required>
+                                    <label>Select Gender<span style="color:#FF0000;"><sup>*</sup></span></label>
+                                    <select name="gender" id="gender" class="form-control gender" required>
+                                        <option Selected value="">Select Gender</option>
+                                        <option value="male">Male</option>
+                                        <option value="female">Female</option>
+                                        <option value="other">Other</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group">
+									<label>Enter Religion<span style="color:#FF0000;"><sup>*</sup></span></label>
+									<input type="text" id="religion" name="religion" class="form-control religion" placeholder="Enter Religion" required>
 								</div>
 
                                 <div class="form-group">
-									<label>Enter Page Link<span style="color:#FF0000;"><sup>*</sup></span></label>
-									<input type="text" name="page_link" id="page_link" class="form-control page_link" placeholder="Enter Page Link" required>
+									<label>Enter Location<span style="color:#FF0000;"><sup>*</sup></span></label>
+									<input type="text" name="location" id="location" class="form-control location" placeholder="Enter Location" required>
 								</div>
 
                                 <div class="form-group">
-									<label>Enter Page Category<span style="color:#FF0000;"><sup>*</sup></span></label>
-									<input type="text" name="page_category" id="page_category" class="form-control page_category" placeholder="Enter Page Category" required>
+									<label>Enter State<span style="color:#FF0000;"><sup>*</sup></span></label>
+									<input type="text" name="state" id="state" class="form-control state" placeholder="Enter State" required>
 								</div>
 
                                 <div class="form-group">
-									<label>Enter Page Location<span style="color:#FF0000;"><sup>*</sup></span></label>
-									<input type="text" name="page_location" id="page_location" class="form-control page_location" placeholder="Enter Page Location" required>
+									<label>Enter B'day Wish<span style="color:#FF0000;"><sup>*</sup></span></label>
+									<input type="text" id="birthday_wish" name="birthday_wish" class="form-control birthday_wish" placeholder="Enter B'day Wish" required>
+								</div>
+                                
+                                <div class="form-group">
+                                    <label>Enter Notification<span style="color:#FF0000;"><sup>*</sup></span></label>
+                                    <input type="text" name="notification" id="notification" class="form-control notification" placeholder="Enter Notification" required>
+                                </div>
+
+                                <div class="form-group">
+                                    <label>Enter Reel link<span style="color:#FF0000;"><sup>*</sup></span></label>
+                                    <input type="text" name="reel_link" id="reel_link" class="form-control reel_link" placeholder="Enter Reel Link" required>
+                                </div>
+
+
+                                <div class="form-group">
+									<label>Enter Video Link<span style="color:#FF0000;"><sup>*</sup></span></label>
+									<input type="text" name="video_link" id="video_link" class="form-control video_link" placeholder="Enter Video Link" required>
 								</div>
 
                                 <div class="form-group">
-									<label>Enter Page Followers<span style="color:#FF0000;"><sup>*</sup></span></label>
-									<input type="text" name="page_followers" id="page_followers" class="form-control page_followers" placeholder="Enter Page Followers" required>
+									<label>Enter Event<span style="color:#FF0000;"><sup>*</sup></span></label>
+									<input type="text" name="event" id="event" class="form-control event" placeholder="Enter Event" required>
 								</div>
 
                                 <div class="form-group">
-									<label>Enter Page Permission<span style="color:#FF0000;"><sup>*</sup></span></label>
-									<input type="text" name="page_permissions" id="page_permissions" class="form-control page_permissions" placeholder="Enter Page Permission" required>
+									<label>Enter Home Time Limit<span style="color:#FF0000;"><sup>*</sup></span></label>
+									<input type="text" name="home_time_limit" id="home_time_limit" class="form-control home_time_limit" placeholder="Enter Page Location" required>
 								</div>
 
                                 <div class="form-group">
                                     <label>Select Status<span style="color:#FF0000;"><sup>*</sup></span></label>
                                     <select name="status" id="status" class="form-control status">
                                         <option Selected value="">Select Status</option>
-                                        <option value="1">Active</option>
-                                        <option value="0">Inactive</option>
+                                        <option value="1">Running</option>
+                                        <option value="0">Pending</option>
+                                        <option value="0">Completed</option>
                                     </select>
                                 </div>
 
@@ -116,7 +143,7 @@
                                     <?php 
                                         $years = []; 
                                         foreach ($result as $r) {
-                                            $year = substr($r["date_time"], 0, 4);
+                                            $year = substr($r["last_date"], 0, 4);
                                             $years[] = $year;
                                         }
                                         $uniqueYears = array_unique($years);
@@ -130,16 +157,19 @@
                                 <thead>
                                     <tr>
                                         <th class="text-center">Sl No.</th>
-                                        <th class="text-center">Registered Date</th>
-                                        <th class="text-center">Profile Id</th>
-                                        <th class="text-center">Profile Name</th>
-                                        <th class="text-center">Page Code</th>
-                                        <th class="text-center">Page Name</th>
-                                        <th class="text-center">Page Link</th>
-                                        <th class="text-center">Page Category</th>
-                                        <th class="text-center">Page Location</th>
-                                        <th class="text-center">Page Followers</th>
-                                        <th class="text-center">Page Permissions</th>
+                                        <th class="text-center">Last Updated Date</th>
+                                        <th class="text-center">Account Id</th>
+                                        <th class="text-center">Account Name</th>
+                                        <th class="text-center">Gender</th>
+                                        <th class="text-center">Religion</th>
+                                        <th class="text-center">Location</th>
+                                        <th class="text-center">State</th>
+                                        <th class="text-center">B'day Wish</th>
+                                        <th class="text-center">Notification</th>
+                                        <th class="text-center">Reel Link</th>
+                                        <th class="text-center">Video Link</th>
+                                        <th class="text-center">Event</th>
+                                        <th class="text-center">Home Time Limit</th>
                                         <th class="text-center">Status</th>
                                         <th class="text-center">Action</th>
                                     </tr>
@@ -148,22 +178,24 @@
                                     <?php
                                     $i = 0;
                                     foreach ($result as $r) {
-                                        $status = ($r["status"] == 1) ? 'Active' : 'Inactive';
-                                        $createdAt = date('d/m/Y H:i:s', strtotime($r['date_time']));
+                                        $lastDate = date('d/m/Y H:i:s', strtotime($r['last_date']));
                                         echo "<tr>";
 										echo "";
 										echo "<td>" . ++$i . "</td>";
-										echo "<td class='date_time'>" . $createdAt . "</td>";
-										echo "<td class='profile_id'>" . $r["profile_id"] . "</td>";
-										echo "<td class='profile_name'>" . $r["profile_name"] . "</td>";
-										echo "<td class='account_id'>FBG00" . $r["id"] ."</td>";
-										echo "<td class='page_name'>" . $r["page_name"] . "</td>";
-										echo "<td class='page_link'>" . $r["page_link"] . "</td>";
-										echo "<td class='page_category'>" . $r["page_category"] . "</td>";
-										echo "<td class='page_location'>" . $r["page_location"] . "</td>";
-										echo "<td class='page_followers'>" . $r["page_followers"] . "</td>";
-										echo "<td class='page_permissions'>" . $r["page_permissions"] . "</td>";
-                                        echo "<td class='status'>" . $status . "</td>";
+										echo "<td class='last_date'>" . $lastDate . "</td>";
+										echo "<td class='account_id'>" . $r["account_id"] . "</td>";
+										echo "<td class='account_name'>" . $r["account_name"] ."</td>";
+										echo "<td class='gender'>" . $r["gender"] . "</td>";
+										echo "<td class='religion'>" . $r["religion"] . "</td>";
+										echo "<td class='location'>" . $r["location"] . "</td>";
+										echo "<td class='state'>" . $r["state"] . "</td>";
+										echo "<td class='birthday_wish'>" . $r["birthday_wish"] . "</td>";
+										echo "<td class='notification'>" . $r["notification"] . "</td>";
+										echo "<td class='reel_link'>" . $r["reel_link"] . "</td>";
+										echo "<td class='video_link'>" . $r["video_link"] . "</td>";
+										echo "<td class='event'>" . $r["event"] . "</td>";
+										echo "<td class='home_time_limit'>" . $r["home_time_limit"] . "</td>";
+                                        echo "<td class='status'>" . $r["status"] . "</td>";
 										echo "<td><a class=\"fa fa-pencil fa-fw editcap\" id='{$r['id']}' href='#'></a>&nbsp;&nbsp;&nbsp;<a class=\"fa fa-trash-o fa-fw delcap\" href='#' id='{$r['id']}'></a></td></tr>";
                                     }
                                     ?>
@@ -298,7 +330,7 @@
             ajax: {
                 url: '<?php echo base_url(); ?>home/fetch_all_facebook_account_details',
                 dataType: 'json',
-                delay: 2000,
+                delay: 250,
                 data: function (params) {
                     return {
                         search: params.term
@@ -327,7 +359,7 @@
             ajax: {
                 url: '<?php echo base_url(); ?>home/fetch_all_facebook_account_details',
                 dataType: 'json',
-                delay: 2000,
+                delay: 250,
                 data: function (params) {
                     return {
                         search: params.term

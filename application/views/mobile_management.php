@@ -23,9 +23,6 @@
     .account-select {
         width: 150px !important;
     }
-    .social-modal-footer {
-        padding: 90px 0px 0px 0px !important;
-    }
 </style>
 <!-- Begin Page Content -->
 <div class="container-fluid">
@@ -90,7 +87,7 @@
 
                 <!--Add Social Media Accounts Model -->
                 <div class="modal fade" id="social_accounts" tabindex="-1" role="dialog" aria-labelledby="permissionModalLabel" aria-hidden="true">
-                    <div class="modal-dialog">
+                    <div class="modal-dialog" style="width: 640px;">
                         <div class="modal-content">
                             <div class="modal-header">
                                 <button type="button" class="close" id="userCancleModal" data-dismiss="modal" aria-hidden="true">&times;</button>
@@ -103,7 +100,7 @@
                                 <input type="hidden" id="mobile_id" name="mobile_id" class="mobile_id">
                               </div>
                               <div class="modal-footer social-modal-footer">
-                                <input type="submit" name="submit" id="saveAccountsBtn" style="margin-left:200px;" value="Save" class="btn btn-primary sav-chng" />
+                                <button type="button" class="btn btn-secondary btn-info addFieldBtn" title="Add more field" style="padding: 6px 20px;">+</button>
                               </div>
                             </div>
                             <?php echo form_close();?>
@@ -361,12 +358,8 @@
                                         <option value="">Select Account</option>
                                         <option value="${account.account}" selected>${account.account}</option>
                                     </select>
-                                    ${
-                                        index === 0
-                                            ? `<button type="button" class="btn btn-secondary addFieldBtn" style="padding: 6px 13px; background-color: green; color: white;">+</button>
-                                            <button type="button" title="Blank the current field"style="padding: 6px 6px;" class="removeFieldBtn btn btn-danger">-</button>`
-                                            : `<button type="button" class="btn btn-danger removeFieldBtn" style="padding: 6px 20px; color: white;">-</button>`
-                                    }
+                                    <button type="button" class="btn btn-warning updateFieldBtn" title="Update this account" id="${account.account}" style="padding: 6px 15px; color: white;"><i class="fa fa-pencil"></i></button>
+                                    <button type="button" class="btn btn-danger removeFieldBtn" title="Delete this account" style="padding: 6px 15px; color: white;"><i class="fa fa-trash-o"></i></button>
                                 </div>
                             `;
                             $('#account-fields-container').append(savedAccountFields);
@@ -401,39 +394,19 @@
                     <select name="accounts[]" class="form-control account-select" required>
                         <option value="" selected>Select Account</option>
                     </select>
-                    <button type="button" class="btn btn-secondary addFieldBtn" style="padding: 6px 20px; background-color: green; color: white;">+</button>
-                </div>
-            `;
+                    <button type="button" class="btn btn-secondary saveFieldBtn" title="Save this account" style="padding: 6px 15px; background-color: green; color: white;"><i class="fa fa-file"></i></button>
+                    <button type="button" class="btn btn-danger removeFieldBtn" title="Delete this account" style="padding: 6px 15px; color: white;"><i class="fa fa-trash-o"></i></button>
+                </div>`;
             // Append the new fields to the container
             $('#account-fields-container').append(newAccountFields);
         }
 
         // Add new fields when + button is clicked
-        $('#account-fields-container').on('click', '.addFieldBtn', function () {
-            var newAccountFields = `
-                <div class="form-group mt-5">
-                    <select name="platform[]" class="form-control platform-select" required>
-                        <option value="" selected>Select Social Media Platform</option>
-                        <option value="facebook">Facebook</option>
-                        <option value="instagram">Instagram</option>
-                        <option value="twitter">Twitter</option>
-                        <option value="youtube">YouTube</option>
-                    </select>
-                    <select name="app_series[]" class="form-control app-series-select" required>
-                        <option value="" selected>Select App Series</option>
-                    </select>
-                    <select name="accounts[]" class="form-control account-select" required>
-                        <option value="" selected>Select Account</option>
-                    </select>
-                    <button type="button" class="btn btn-danger removeFieldBtn" style="padding: 6px 20px; color: white;">-</button>
-                </div>
-            `;
-
-            // Append the new fields to the container
-            $('#account-fields-container').append(newAccountFields);
+        $(document).on('click', '.addFieldBtn', function () {
+            addNewAccountRow();
         });
 
-        // Remove fields and delete the record when - button is clicked
+        // Remove fields and delete the record when remove button is clicked
         $('#account-fields-container').on('click', '.removeFieldBtn', function () {
 
             var $formGroup = $(this).closest('.form-group');
@@ -452,11 +425,68 @@
                         }
                     },
                     error: function() {
-                        alert('Error deleting account.');
+                        alert('Error when deleting account.');
                     }
                 });
             } else {
                 $formGroup.remove();
+            }
+        });
+
+        // Save the social media account when save button is clicked
+        $('#account-fields-container').on('click', '.saveFieldBtn', function () {
+            var $formGroup = $(this).closest('.form-group');
+            var mobileId = $('#mobile_id').val();
+            var platform = $formGroup.find('.platform-select').val();
+            var appSeries = $formGroup.find('.app-series-select').val();
+            var accountId = $formGroup.find('.account-select').val();
+            if (mobileId && platform && appSeries && accountId) {
+                $.ajax({
+                    url: '<?php echo base_url(). "home/save_social_media_account" ?>',
+                    type: 'POST',
+                    data: { mobile_id: mobileId, platform: platform, app_series: appSeries, account_id: accountId },
+                    success: function(response) {
+                        if (response) {
+                            $formGroup.remove();
+                        } else {
+                            alert('Failed to save the account.');
+                        }
+                    },
+                    error: function() {
+                        alert('Error when saving the account.');
+                    }
+                });
+            } else {
+                alert('All fields are required!!');
+            }
+        });
+
+        // Update the social media account when update button is clicked
+        $('#account-fields-container').on('click', '.updateFieldBtn', function () {
+            var $formGroup = $(this).closest('.form-group');
+            var id = $(this).attr('id');
+            var mobileId = $('#mobile_id').val();
+            var platform = $formGroup.find('.platform-select').val();
+            var appSeries = $formGroup.find('.app-series-select').val();
+            var accountId = $formGroup.find('.account-select').val();
+            if (mobileId && platform && appSeries && accountId) {
+                $.ajax({
+                    url: '<?php echo base_url(). "home/update_social_media_account" ?>',
+                    type: 'POST',
+                    data: { id :id, mobile_id: mobileId, platform: platform, app_series: appSeries, account_id: accountId },
+                    success: function(response) {
+                        if (response) {
+                            $formGroup.remove();
+                        } else {
+                            alert('Failed to update the account.');
+                        }
+                    },
+                    error: function() {
+                        alert('Error when updating the account.');
+                    }
+                });
+            } else {
+                alert('All fields are required!!');
             }
         });
 

@@ -298,7 +298,7 @@
             ajax: {
                 url: '<?php echo base_url(); ?>home/fetch_all_facebook_account_details',
                 dataType: 'json',
-                delay: 2000,
+                delay: 250,
                 data: function (params) {
                     return {
                         search: params.term
@@ -327,7 +327,7 @@
             ajax: {
                 url: '<?php echo base_url(); ?>home/fetch_all_facebook_account_details',
                 dataType: 'json',
-                delay: 2000,
+                delay: 250,
                 data: function (params) {
                     return {
                         search: params.term
