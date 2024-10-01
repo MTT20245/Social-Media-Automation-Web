@@ -72,39 +72,44 @@
 
 										echo "<td class='birthday_wish'>
                                             <input type='checkbox' class='birthday_wish_checkbox'" . 
-                                            ($r["birthday_wish"] == 1 ? 'checked' : '') . ">
-                                            <p><b> Last Time Perform: <br>" . date('d-m-Y H:i:s', strtotime($r['last_time_birthday_wish'])) . "</b></p>
-                                        </td>";
-
+                                            ($r["birthday_wish"] == 1 ? 'checked' : '') . ">";
+                                            if (!empty($r['last_time_birthday_wish'])) {
+                                                echo "<p><b> Last Time Perform: <br>" . date('d-m-Y H:i:s', strtotime($r['last_time_birthday_wish'])) . "</b></p></td>";
+                                            } 
 										echo "<td class='notification'>
                                             <input type='checkbox' class='notification_checkbox'" . 
-                                            ($r["notification"] == 1 ? 'checked' : '') . ">
-                                            <p><b> Last Time Perform: <br>" . date('d-m-Y H:i:s', strtotime($r['last_time_notification'])) . "</b></p>
-                                        </td>";
+                                            ($r["notification"] == 1 ? 'checked' : '') . ">";
+                                            if (!empty($r['last_time_notification'])) {
+                                                echo "<p><b> Last Time Perform: <br>" . date('d-m-Y H:i:s', strtotime($r['last_time_notification'])) . "</b></p></td>";
+                                            }
 
 										echo "<td class='reel'>
                                             <input type='checkbox' class='reel_checkbox'" . 
-                                            ($r["reel"] == 1 ? 'checked' : '') . ">
-                                            <p><b> Last Time Perform: <br>" . date('d-m-Y H:i:s', strtotime($r['last_time_reel'])) . "</b></p>
-                                        </td>";
+                                            ($r["reel"] == 1 ? 'checked' : '') . ">";
+                                            if (!empty($r['last_time_reel'])) {
+                                                echo "<p><b> Last Time Perform: <br>" . date('d-m-Y H:i:s', strtotime($r['last_time_reel'])) . "</b></p></td>";
+                                            }
 
 										echo "<td class='video'>
                                             <input type='checkbox' class='video_checkbox'" . 
-                                            ($r["video"] == 1 ? 'checked' : '') . ">
-                                            <p><b> Last Time Perform: <br>" . date('d-m-Y H:i:s', strtotime($r['last_time_video'])) . "</b></p>
-                                        </td>";
+                                            ($r["video"] == 1 ? 'checked' : '') . ">";
+                                            if (!empty($r['last_time_video'])) {
+                                                echo "<p><b> Last Time Perform: <br>" . date('d-m-Y H:i:s', strtotime($r['last_time_video'])) . "</b></p></td>";
+                                            }
 
 										echo "<td class='event'>
                                             <input type='checkbox' class='event_checkbox'" . 
-                                            ($r["event"] == 1 ? 'checked' : '') . ">
-                                            <p><b> Last Time Perform: <br>" . date('d-m-Y H:i:s', strtotime($r['last_time_event'])) . "</b></p>
-                                        </td>";
+                                            ($r["event"] == 1 ? 'checked' : '') . ">";
+                                            if (!empty($r['last_time_event'])) {
+                                                echo "<p><b> Last Time Perform: <br>" . date('d-m-Y H:i:s', strtotime($r['last_time_event'])) . "</b></p></td>";
+                                            }
                                         
 										echo "<td class='home_time_limit'>
                                             <input type='checkbox' class='home_time_limit_checkbox'" . 
-                                            ($r["home_time_limit"] == 1 ? 'checked' : '') . ">
-                                            <p><b> Last Time Perform: <br>" . date('d-m-Y H:i:s', strtotime($r['last_time_home_time_limit'])) . "</b></p>
-                                        </td>";
+                                            ($r["home_time_limit"] == 1 ? 'checked' : '') . ">";
+                                            if (!empty($r['last_time_event'])) {
+                                                echo "<p><b> Last Time Perform: <br>" . date('d-m-Y H:i:s', strtotime($r['last_time_home_time_limit'])) . "</b></p></td>";
+                                            }
 
                                         echo "<td class='status'>Running</td>";
                                     }
