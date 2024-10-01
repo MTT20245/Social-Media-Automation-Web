@@ -288,47 +288,6 @@ class Home extends CI_Controller {
 		}
 	}
 
-	// Save mobile social media accounts in mobile
-	public function save_mobile_accounts() {
-		if ($this->session->has_userdata('login')) {
-			$platforms = $this->input->post('platform');
-			$app_series = $this->input->post('app_series');
-			$accounts = $this->input->post('accounts'); 
-			$mobileId = $this->input->post('mobile_id');
-			$tableName = '';
-
-			$data = [];
-			
-			foreach ($platforms as $key => $platform) {
-				$data[] = [
-					'mobile_id' => $mobileId,
-					'platform' => $platform,
-					'app_series' => $app_series[$key],
-					'account' => $accounts[$key],
-				];
-
-				if ($platform == 'facebook') {
-					$tableName = 'fb_account_management';
-					$this->Crud->update_facebook_availability($accounts[$key], $tableName);
-				} elseif($platform == 'instagram') {
-					$tableName = 'instagram_management';
-					$this->Crud->update_instagram_availability($accounts[$key], $tableName);
-				}
-			}
-
-			$result = $this->Crud->save_mobile_accounts($mobileId, $data);
-			if($result) {
-				$this->session->set_flashdata('msg', '<div class="alert alert-success text-center">Social Media Account Added Successfully.</div>');
-				redirect(base_url() . 'home/mobile_management', 'refresh');
-			} else {
-				$this->session->set_flashdata('msg', '<div class="alert alert-danger text-center">Facebook Accounts Can\'t Added.</div>');
-				redirect(base_url() . 'home/mobile_management', 'refresh');
-			}
-		} else {
-			redirect(base_url() . 'home/login', 'refresh');
-		}
-	}
-
 	// Get saved social media accounts from mobile
 	public function get_saved_social_media_accounts() {
 		if ($this->session->has_userdata('login')) {
@@ -701,75 +660,20 @@ class Home extends CI_Controller {
 		}
 	}
 
-	// Add or update the facebook page details
-	public function add_update_facebook_profile() {
+	// Add or update the facebook profile details
+	public function add_update_fb_profile_details() {
 		if ($this->session->has_userdata('login')) {
-			// Set validation rules
-			$this->form_validation->set_rules('profile_id', 'Profile ID', 'required');
-			$this->form_validation->set_rules('profile_name', 'Profile Name', 'required');
-			$this->form_validation->set_rules('page_name', 'Page Name', 'required');
-			$this->form_validation->set_rules('page_link', 'Page Link', 'required');
-			$this->form_validation->set_rules('page_category', 'Page Category', 'required');
-			$this->form_validation->set_rules('page_location', 'Page Location', 'required');
-			$this->form_validation->set_rules('page_followers', 'Page Member', 'required');
-			$this->form_validation->set_rules('page_permissions', 'Page Permission', 'required');
-			if ($this->form_validation->run() == FALSE) {
-				$this->session->set_flashdata('msg', '<div class="alert alert-danger text-center">All fields are required!! Please try again.</div>');
-				redirect(base_url() . 'home/fb_page_management', 'refresh');
-			} else {
-				$data['profile_id'] = $this->input->post('profile_id');
-				$data['profile_name'] = $this->input->post('profile_name');
-				$data['page_name'] = $this->input->post('page_name');
-				$data['page_link'] = $this->input->post('page_link');
-				$data['page_category'] = $this->input->post('page_category');
-				$data['page_location'] = $this->input->post('page_location');
-				$data['page_followers'] = $this->input->post('page_followers');
-				$data['page_permissions'] = $this->input->post('page_permissions');
-				if($this->input->post('status') === '1' || $this->input->post('status') === '0') {
-					$data['status'] = $this->input->post('status');
-				}
-
-				if ($this->input->post('sav-typ') == 'edit') {
-					$data['id'] = $this->input->post('id');
-					$result = $this->Crud->edit_facebook_group($data);
-					if($result) {
-						$this->session->set_flashdata('msg', '<div class="alert alert-success
-						text-center">Facebook Page Updated Successfully.</div>');
-						redirect(base_url() . 'home/fb_page_management', 'refresh');
-					} else {
-						$this->session->set_flashdata('msg', '<div class="alert alert-danger
-						text-center">Facebook Page updation failed. Please try again.</div>');
-						redirect(base_url() . 'home/fb_page_management', 'refresh');
-					}
-				} else {
-					$result = $this->Crud->insert_facebook_page($data);
-					if($result) {
-						$this->session->set_flashdata('msg', '<div class="alert alert-success text-center">Facebook Page Added Successfully.</div>');
-						redirect(base_url() . 'home/fb_page_management', 'refresh');
-						
-					} else {
-						$this->session->set_flashdata('msg', '<div class="alert alert-danger text-center">Facebook Page Can\'t Add.</div>');
-						redirect(base_url() . 'home/fb_page_management', 'refresh');
-					}
-				}
-			}
-		} else {
-			redirect(base_url() . 'home/login', 'refresh');
-		}
-	}
-
-	// Delete facebook page 
-	public function delete_facebook_profile() {
-		if ($this->session->has_userdata('login')) {
-			$userId = $this->uri->segment(3);
-			$table = 'fb_page_management';
-			$result = $this->Crud->deleteCommonFunction($userId, $table);
+			$fbId = $this->input->post('fb_id');
+			$data['fb_id'] = str_replace("FB00", "", $fbId);
+			$data['account_id'] = $this->input->post('account_id');
+			$data['field'] = $this->input->post('field');
+			$data['date_field'] = $this->input->post('date_field');
+			$data['value'] = $this->input->post('value');
+			$result = $this->Crud->add_update_fb_profile_details($data);
 			if($result) {
-				$this->session->set_flashdata('msg', '<div class="alert alert-success text-center">Facebook Page Deleted Successfully.</div>');
-				echo 1;
+				return $result;
 			} else {
-				$this->session->set_flashdata('msg', '<div class="alert alert-danger text-center">Facebook Page Can\'t Delete.</div>');
-				echo 0;
+				return $result;
 			}
 		} else {
 			redirect(base_url() . 'home/login', 'refresh');

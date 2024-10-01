@@ -27,6 +27,7 @@ class Crud extends CI_Model
         }
     }
 
+	/** ------------------------------User Management---------------------------- */
     // Get user management data
 	public function get_user_management_data()
 	{
@@ -101,6 +102,7 @@ class Crud extends CI_Model
         return true;
     }
 
+	/** ------------------------------Mobile Management---------------------------- */
 	// Get mobile management data
 	public function get_mobile_management_data()
 	{
@@ -123,7 +125,8 @@ class Crud extends CI_Model
 		return $this->db->affected_rows();
 	}
 
-    // Delete data common function
+	/** --------------------------Delete Common Function---------------------------- */
+    // Delete common function
 	public function deleteCommonFunction($userId, $tableName)
 	{
 		$this->db->where('id', $userId);
@@ -131,34 +134,7 @@ class Crud extends CI_Model
         return true;
 	}
 
-	// Get facebook management data
-	public function get_fb_account_management_data()
-	{
-		$query = $this->db->select('*')->from('fb_account_management')->get();
-		return $query->result_array();
-	}
-
-    // Add new facebook
-	public function insert_fb_account($data)
-	{
-		$this->db->insert('fb_account_management', $data);
-		return $this->db->affected_rows();
-	}
-
-    // Update facebook
-	public function edit_fb_account($data)
-	{
-		$this->db->where('id', $data["id"]);
-		$this->db->update('fb_account_management', $data);
-		return $this->db->affected_rows();
-	}
-
-	// Get total acounts added
-	public function getTotalAccounts($tableName) {
-		$total = $this->db->count_all($tableName);
-		return $total;
-	}
-
+	/** --------------------------Social Media Accounts in Mobile---------------------------- */
 	// Fetch social media accounts
 	public function fetch_social_media_accounts($table) {
 		$this->db->where('availability', 1);
@@ -170,15 +146,6 @@ class Crud extends CI_Model
 		return $output;
 	}
 	
-	// Save social media social accounts 
-	public function save_mobile_accounts($mobileId, $data) {
-
-		$this->db->where('mobile_id', $mobileId);
-		$this->db->delete('social_media_accounts');
-		$this->db->insert_batch('social_media_accounts', $data);
-		return true;
-	}
-
 	// Get all saved social media accounts
 	public function get_saved_social_media_accounts($mobileId) {
 		if (!empty($mobileId)) {
@@ -196,20 +163,6 @@ class Crud extends CI_Model
         } else {
             return [];
         }
-	}
-
-	// Delete the social media account from the mobile
-	public function delete_social_media_account($accountId, $platform) {
-		$this->db->where('account', $accountId);
-		$this->db->where('platform', $platform);
-		$this->db->delete('social_media_accounts');
-
-		if($platform == 'facebook') {
-			$this->db->where('account_id', $accountId);
-			$this->db->update('fb_account_management', ['availability' => 1]);
-		}
-
-        return true;
 	}
 
 	// Save the social media account in the mobile
@@ -241,14 +194,50 @@ class Crud extends CI_Model
         return true;
 	}
 
-	// Update the availability flag 0
-	public function update_facebook_availability($account, $table) {
-		$this->db->where('account_id', $account);
-		$this->db->update($table, ['availability' => 0]);
-	
-		return true;
+	// Delete the social media account from the mobile
+	public function delete_social_media_account($accountId, $platform) {
+		$this->db->where('account', $accountId);
+		$this->db->where('platform', $platform);
+		$this->db->delete('social_media_accounts');
+
+		if($platform == 'facebook') {
+			$this->db->where('account_id', $accountId);
+			$this->db->update('fb_account_management', ['availability' => 1]);
+		}
+
+        return true;
 	}
-	
+
+	/** ------------------------------Facebook Management---------------------------- */
+	// Get facebook management data
+	public function get_fb_account_management_data()
+	{
+		$query = $this->db->select('*')->from('fb_account_management')->get();
+		return $query->result_array();
+	}
+
+    // Add new facebook
+	public function insert_fb_account($data)
+	{
+		$this->db->insert('fb_account_management', $data);
+		return $this->db->affected_rows();
+	}
+
+    // Update facebook
+	public function edit_fb_account($data)
+	{
+		$this->db->where('id', $data["id"]);
+		$this->db->update('fb_account_management', $data);
+		return $this->db->affected_rows();
+	}
+
+	// Get total acounts added
+	public function getTotalAccounts($tableName) {
+		$total = $this->db->count_all($tableName);
+		return $total;
+	}
+
+	/** ------------------------------Facebook Group Management---------------------------- */
 	// Get facebook group data
 	public function get_facebook_group_data()
 	{
@@ -285,6 +274,7 @@ class Crud extends CI_Model
         return $query->result();
 	}
 
+	/** ------------------------------Facebook Page Management---------------------------- */
 	// Get facebook page data
 	public function get_facebook_page_data()
 	{
@@ -307,27 +297,50 @@ class Crud extends CI_Model
 		return $this->db->affected_rows();
 	}
 
-
+	/** ------------------------------Facebook Profile Management---------------------------- */
 	// Get facebook profile data
 	public function get_facebook_profile_data()
 	{
-		$query = $this->db->select('*')->from('fb_profile_management')->get();
+		$this->db->select('fpm.*, fam.id, fam.name, fam.account_id, fam.gender, fam.religion, fam.cast, fam.location, fam.state');
+
+		$this->db->from('fb_account_management AS fam');
+
+		// Join with fb_profile_management table
+		$this->db->join('fb_profile_management AS fpm', 'fpm.fb_id = fam.id', 'left');
+
+		$query = $this->db->get();
 		return $query->result_array();
 	}
 
-	// Add new facebook page
-	public function insert_facebook_profile($data)
+	// Add and update profile details
+	public function add_update_fb_profile_details($data)
 	{
-		$this->db->insert('fb_profile_management', $data);
-		return $this->db->affected_rows();
-	}
+		// Check if the account_id already exists
+        $this->db->where('fb_id', $data['fb_id']);
+        $query = $this->db->get('fb_profile_management');
 
-	// Update facebook page
-	public function edit_facebook_profile($data)
-	{
-		$this->db->where('id', $data["id"]);
-		$this->db->update('fb_profile_management', $data);
-		return $this->db->affected_rows();
+        if ($query->num_rows() > 0) {
+            // If the account_id exists, update the existing record
+            $this->db->where('account_id', $data['account_id']);
+            $this->db->update('fb_profile_management', 
+				[
+					$data['field'] => $data['value'], 
+					$data['date_field'] => date('Y-m-d H:i:s')
+				]
+			);
+			return true;
+        } else {
+            // If the account_id doesn't exist, insert a new record
+            $this->db->insert('fb_profile_management',
+				[
+					'fb_id' => $data['fb_id'],
+					'account_id' => $data['account_id'],
+					$data['field'] => $data['value'],
+					$data['date_field'] => date('Y-m-d H:i:s'),
+				]
+			);
+			return true;
+        }
 	}
 
 }
