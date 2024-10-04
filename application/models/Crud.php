@@ -210,7 +210,7 @@ class Crud extends CI_Model
 
 	/** ------------------------------Facebook Management---------------------------- */
 	// Get facebook management data
-	public function get_fb_account_management_data()
+	public function get_facebook_account_data()
 	{
 		$query = $this->db->select('*')->from('fb_account_management')->get();
 		return $query->result_array();
@@ -262,11 +262,11 @@ class Crud extends CI_Model
 
 	// Fetch all social media accounts
 	public function fetch_all_facebook_account_details($search) {
-		$query = $this->db->select('name, account_id')
+		$query = $this->db->select('name, id')
                           ->from('fb_account_management');
 
 		if (!empty($search)) {
-            $this->db->like('account_id', $search);
+            $this->db->like('id', $search);
             $this->db->or_like('name', $search);
         }
 
@@ -301,7 +301,7 @@ class Crud extends CI_Model
 	// Get facebook profile data
 	public function get_facebook_profile_data()
 	{
-		$this->db->select('fpm.*, fam.id, fam.name, fam.account_id, fam.gender, fam.religion, fam.cast, fam.location, fam.state');
+		$this->db->select('fpm.*, fam.id, fam.name, fam.account_id, fam.gender, fam.religion, fam.cast, fam.location, fam.city, fam.state');
 
 		$this->db->from('fb_account_management AS fam');
 
@@ -342,5 +342,34 @@ class Crud extends CI_Model
 			return true;
         }
 	}
+
+	/** ------------------------------Facebook Task Management---------------------------- */
+	// Get facebook all data
+	// public function get_facebook_all_data()
+	// {
+		// $this->db->select('fbam.*, fbgm.*, fbpm.*');
+		// $this->db->from('fb_account_management as fbam');
+
+		// $this->db->join('fb_group_management as fbgm', 'fbgm.fb_id = fbam.id');
+		// $this->db->join('fb_page_management as fbpm', 'fbpm.fb_id=fbam.id');
+		// $query = $this->db->get();
+		// return $query->result_array();
+	// }
+
+    // Add new facebook task
+	public function insert_facebook_task($data)
+	{
+		$this->db->insert('fb_page_management', $data);
+		return $this->db->affected_rows();
+	}
+
+    // Update facebook task
+	public function edit_facebook_task($data)
+	{
+		$this->db->where('id', $data["id"]);
+		$this->db->update('fb_page_management', $data);
+		return $this->db->affected_rows();
+	}
+
 
 }

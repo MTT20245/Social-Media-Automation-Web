@@ -36,9 +36,9 @@
                                 echo form_open_multipart("home/add_update_facebook_page", $data); ?>
 
                                 <div class="form-group">
-                                    <label>Select Profile Id<span style="color:#FF0000;"><sup>*</sup></span></label>
-                                    <select name="profile_id" id="profile_id" class="form-control profile_id" required>
-                                        <option Selected value="">Select Profile Id</option>
+                                    <label>Select Facebook Id<span style="color:#FF0000;"><sup>*</sup></span></label>
+                                    <select name="fb_id" id="fb_id" class="form-control fb_id" required>
+                                        <option Selected value="">Select Facebook Id</option>
                                     </select>
                                 </div>
 
@@ -131,7 +131,7 @@
                                     <tr>
                                         <th class="text-center">Sl No.</th>
                                         <th class="text-center">Registered Date</th>
-                                        <th class="text-center">Profile Id</th>
+                                        <th class="text-center">Facebook Id</th>
                                         <th class="text-center">Profile Name</th>
                                         <th class="text-center">Page Code</th>
                                         <th class="text-center">Page Name</th>
@@ -154,9 +154,9 @@
 										echo "";
 										echo "<td>" . ++$i . "</td>";
 										echo "<td class='date_time'>" . $createdAt . "</td>";
-										echo "<td class='profile_id'>" . $r["profile_id"] . "</td>";
+										echo "<td class='fb_id'>" . $r["fb_id"] . "</td>";
 										echo "<td class='profile_name'>" . $r["profile_name"] . "</td>";
-										echo "<td class='account_id'>FBG00" . $r["id"] ."</td>";
+										echo "<td class='account_id'>FBP00" . $r["id"] ."</td>";
 										echo "<td class='page_name'>" . $r["page_name"] . "</td>";
 										echo "<td class='page_link'>" . $r["page_link"] . "</td>";
 										echo "<td class='page_category'>" . $r["page_category"] . "</td>";
@@ -164,7 +164,7 @@
 										echo "<td class='page_followers'>" . $r["page_followers"] . "</td>";
 										echo "<td class='page_permissions'>" . $r["page_permissions"] . "</td>";
                                         echo "<td class='status'>" . $status . "</td>";
-										echo "<td><a class=\"fa fa-pencil fa-fw editcap\" id='{$r['id']}' href='#'></a>&nbsp;&nbsp;&nbsp;<a class=\"fa fa-trash-o fa-fw delcap\" href='#' id='{$r['id']}'></a></td></tr>";
+										echo "<td><a class=\"fa fa-pencil fa-fw editcap\" title='Edit details' id='{$r['id']}' href='#'></a>&nbsp;&nbsp;&nbsp;<a class=\"fa fa-trash-o fa-fw delcap\" href='#' title='Delete page' id='{$r['id']}'></a></td></tr>";
                                     }
                                     ?>
                                 </tbody>
@@ -229,7 +229,7 @@
 		var myModal = $('#myModal');
 		// Now get the values from the table
 		var id = $(this).attr('id');
-		var profile_id = $(this).closest('tr').find('td.profile_id').html();
+		var fb_id = $(this).closest('tr').find('td.fb_id').html();
 		var profile_name = $(this).closest('tr').find('td.profile_name').html();
 		var account_id = $(this).closest('tr').find('td.account_id').html();
 		var page_name = $(this).closest('tr').find('td.page_name').html();
@@ -241,7 +241,7 @@
 		var status = $(this).closest('tr').find('td.status').html();
         var statusValue = (status === "Active") ? "1" : "0";
         // Set them in the modal
-		$('.profile_id', myModal).val(profile_id);
+		$('.fb_id', myModal).val(fb_id);
 		$('.profile_name', myModal).val(profile_name);
 		$('.account_id', myModal).val(account_id);
 		$('.page_name', myModal).val(page_name);
@@ -268,7 +268,7 @@
     $('button.add_new').on('click', function() {
         $('#status').closest('.form-group').hide();
         var myModal1 = $('#myModal');
-        $('.profile_id', myModal).val('');
+        $('.fb_id', myModal).val('');
 		$('.profile_name', myModal).val('');
 		$('.account_id', myModal).val('');
 		$('.page_name', myModal).val('');
@@ -289,19 +289,30 @@
     });
 
     $(document).ready(function(){
+        // Relode the page when close the model
+        $('.close').click(function() {
+            location.reload();
+        });
+        
         // Show facebook account id
-        $('#profile_id').select2({
-            placeholder: "Select Profile Id",
+        $('#fb_id').select2({
+            placeholder: "Select Facebook Id",
             allowClear: true,
             width: '100%',
-            dropdownParent: $('#profile_id').parent(),
+            dropdownParent: $('#fb_id').parent(),
             ajax: {
                 url: '<?php echo base_url(); ?>home/fetch_all_facebook_account_details',
                 dataType: 'json',
                 delay: 250,
                 data: function (params) {
+                    let searchTerm = params.term || '';
+                    let isFB00Search = searchTerm.toLowerCase() === 'fb00';
+                    let isFSearch = searchTerm.toLowerCase() === 'f';
+                    let isFBSearch = searchTerm.toLowerCase() === 'fb';
+                    let isFB0earch = searchTerm.toLowerCase() === 'fb0';
+
                     return {
-                        search: params.term
+                        search: (isFSearch || isFBSearch || isFB0earch || isFB00Search) ? '' : searchTerm.replace(/^FB00/i, '')
                     };
                 },
                 processResults: function (data) {
@@ -323,7 +334,7 @@
             placeholder: "Select Profile Name",
             allowClear: true,
             width: '100%',
-            dropdownParent: $('#profile_id').parent(),
+            dropdownParent: $('#profile_name').parent(),
             ajax: {
                 url: '<?php echo base_url(); ?>home/fetch_all_facebook_account_details',
                 dataType: 'json',

@@ -10,10 +10,10 @@
     input[type="checkbox"] {
         width: 20px;
         height: 20px;
-        accent-color: green;
+        accent-color: lightblue;
     }
     p {
-        color:darkgreen;
+        font-size: 14px;
     }
 
 </style>
@@ -44,6 +44,7 @@
                                         <th class="text-center">Religion</th>
                                         <th class="text-center">Cast</th>
                                         <th class="text-center">Location</th>
+                                        <th class="text-center">City</th>
                                         <th class="text-center">State</th>
                                         <th class="text-center">B'day Wish</th>
                                         <th class="text-center">Notification</th>
@@ -52,6 +53,25 @@
                                         <th class="text-center">Event</th>
                                         <th class="text-center">Home Time Limit <br>with Likes & Comment</th>
                                         <th class="text-center">Status</th>
+                                    </tr>
+                                    <tr class="filter-row">
+                                        <th class="text-center"></th>
+                                        <th class="text-center"><input type="text" class="profile-filter-input" placeholder="Filter Account Code..."></th>
+                                        <th class="text-center"><input type="text" class="profile-filter-input" placeholder="Filter Account ID..."></th>
+                                        <th class="text-center"><input type="text" class="profile-filter-input" placeholder="Filter Account Name..."></th>
+                                        <th class="text-center"><input type="text" class="profile-filter-input" placeholder="Filter Gender..."></th>
+                                        <th class="text-center"><input type="text" class="profile-filter-input" placeholder="Filter Religion..."></th>
+                                        <th class="text-center"><input type="text" class="profile-filter-input" placeholder="Filter Cast..."></th>
+                                        <th class="text-center"><input type="text" class="profile-filter-input" placeholder="Filter Location..."></th>
+                                        <th class="text-center"><input type="text" class="profile-filter-input" placeholder="Filter City..."></th>
+                                        <th class="text-center"><input type="text" class="profile-filter-input" placeholder="Filter State..."></th>
+                                        <th class="text-center"></th>
+                                        <th class="text-center"></th>
+                                        <th class="text-center"></th>
+                                        <th class="text-center"></th>
+                                        <th class="text-center"></th>
+                                        <th class="text-center"></th>
+                                        <th class="text-center"><input type="text" class="profile-filter-input" placeholder="Filter Status..."></th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -68,6 +88,7 @@
 										echo "<td class='religion'>" . $r["religion"] . "</td>";
 										echo "<td class='religion'>" . $r["cast"] . "</td>";
 										echo "<td class='location'>" . $r["location"] . "</td>";
+										echo "<td class='location'>" . $r["city"] . "</td>";
 										echo "<td class='state'>" . $r["state"] . "</td>";
 
 										echo "<td class='birthday_wish'>
@@ -275,6 +296,25 @@
             });
         });
         
+        // Apply filter on facebook profiles
+        $(".profile-filter-input").on("keyup", function() {
+            var filters = [];
+            $(".profile-filter-input").each(function() {
+                filters.push($(this).val().toLowerCase());
+            });
+            $("#dataTables-example tbody tr").each(function() {
+                var isVisible = true;
+                $(this).children("td").each(function(index) {
+                    if (index > 0) {
+                        var filterValue = filters[index - 1];                        
+                        if (filterValue && $(this).text().toLowerCase().indexOf(filterValue) === -1) {
+                            isVisible = false;
+                        }
+                    }
+                });
+                $(this).toggle(isVisible);
+            });
+        });
     });
 </script>
 

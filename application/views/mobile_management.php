@@ -90,7 +90,7 @@
                     <div class="modal-dialog" style="width: 640px;">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <button type="button" class="close" id="userCancleModal" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                                 <h4 class="modal-title" id="permissionModalLabel">View & Add Social Media Accounts</h4>
                             </div>
                             <div class="modal-body">
@@ -178,7 +178,7 @@
 										echo "<td class='add text-center'><button class='add_social_account' id='{$r['id']}'>Add Social Accounts</button></td>";
 										echo "<td class='add text-center'><button class='validate_accounts' id='{$r['id']}'>Validate Accounts</button></td>";
                                         echo "<td class='status'>" . $status . "</td>";
-										echo "<td><a class=\"fa fa-pencil fa-fw editcap\" id='{$r['id']}' href='#'></a>&nbsp;&nbsp;&nbsp;<a class=\"fa fa-trash-o fa-fw delcap\" href='#' id='{$r['id']}'></a></td></tr>";
+										echo "<td><a class=\"fa fa-pencil fa-fw editcap\" title='Edit details' id='{$r['id']}' href='#'></a>&nbsp;&nbsp;&nbsp;<a class=\"fa fa-trash-o fa-fw delcap\" href='#' title='Delete mobile' id='{$r['id']}'></a></td></tr>";
                                     }
                                     ?>
                                 </tbody>
@@ -300,7 +300,7 @@
         });
 
         // Relode the page when close the model
-        $('#userCancleModal').click(function() {
+        $('.close').click(function() {
             location.reload();
         });
 

@@ -217,7 +217,7 @@
 										echo "<td class='state'>" . $r["state"] . "</td>";
 										echo "<td class='friends'>" . $r["friends"] . "</td>";
                                         echo "<td class='status'>" . $status . "</td>";
-										echo "<td><a class=\"fa fa-pencil fa-fw editcap\" id='{$r['id']}' href='#'></a>&nbsp;&nbsp;&nbsp;<a class=\"fa fa-trash-o fa-fw delcap\" href='#' id='{$r['id']}'></a></td></tr>";
+										echo "<td><a class=\"fa fa-pencil fa-fw editcap\" title='Edit details' id='{$r['id']}' href='#'></a>&nbsp;&nbsp;&nbsp;<a class=\"fa fa-trash-o fa-fw delcap\" href='#' title='Delete account' id='{$r['id']}'></a></td></tr>";
                                     }
                                     ?>
                                 </tbody>
@@ -359,6 +359,11 @@
     });
 
     $(document).ready(function(){
+        // Relode the page when close the model
+        $('.close').click(function() {
+            location.reload();
+        });
+        
         // Outside the modal not clickable 
         $('#myModal').modal({
         backdrop: 'static',

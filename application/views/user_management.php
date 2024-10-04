@@ -266,7 +266,7 @@
                                         echo "<td class='password hidden'>" . $r["password"] . "</td>";
 										echo "<td class='add text-center'><button class='user_rights' data-id='{$r['id']}'>Set Rights</button></td>";
 										echo "<td class='status'>" . $status . "</td>";
-										echo "<td><a class=\"fa fa-pencil fa-fw editcap\" id='{$r['id']}' href='#'></a>&nbsp;&nbsp;&nbsp;<a class=\"fa fa-trash-o fa-fw delcap\" href='#' id='{$r['id']}'></a></td></tr>";
+										echo "<td><a class=\"fa fa-pencil fa-fw editcap\" title='Edit details' id='{$r['id']}' href='#'></a>&nbsp;&nbsp;&nbsp;<a class=\"fa fa-trash-o fa-fw delcap\" href='#' title='Delete User' id='{$r['id']}'></a></td></tr>";
                                     }
                                     ?>
                                 </tbody>

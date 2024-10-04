@@ -360,7 +360,7 @@ class Home extends CI_Controller {
 	public function fb_account_management()
 	{
 		if ($this->session->has_userdata('login')) {
-			$page['result'] = $this->Crud->get_fb_account_management_data();
+			$page['result'] = $this->Crud->get_facebook_account_data();
 			$this->load->view('header');
 			$this->load->view('fb_account_management', $page);
 		} else {
@@ -473,7 +473,7 @@ class Home extends CI_Controller {
 	public function add_update_facebook_group() {
 		if ($this->session->has_userdata('login')) {
 			// Set validation rules
-			$this->form_validation->set_rules('profile_id', 'Profile ID', 'required');
+			$this->form_validation->set_rules('fb_id', 'Profile ID', 'required');
 			$this->form_validation->set_rules('profile_name', 'Profile Name', 'required');
 			$this->form_validation->set_rules('group_name', 'Group Name', 'required');
 			$this->form_validation->set_rules('group_link', 'Group Link', 'required');
@@ -485,7 +485,8 @@ class Home extends CI_Controller {
 				$this->session->set_flashdata('msg', '<div class="alert alert-danger text-center">All fields are required!! Please try again.</div>');
 				redirect(base_url() . 'home/fb_group_management', 'refresh');
 			} else {
-				$data['profile_id'] = $this->input->post('profile_id');
+				$fbId = $this->input->post('fb_id');
+				$data['fb_id'] = str_replace("FB00", "", $fbId);
 				$data['profile_name'] = $this->input->post('profile_name');
 				$data['group_name'] = $this->input->post('group_name');
 				$data['group_link'] = $this->input->post('group_link');
@@ -551,7 +552,7 @@ class Home extends CI_Controller {
         $response = array();
         foreach ($allAccounts as $account) {
             $response[] = array(
-                'account_id' => $account->account_id,
+                'account_id' => 'FB00'.$account->id,
                 'name' => $account->name,
             );
         }
@@ -576,7 +577,7 @@ class Home extends CI_Controller {
 	public function add_update_facebook_page() {
 		if ($this->session->has_userdata('login')) {
 			// Set validation rules
-			$this->form_validation->set_rules('profile_id', 'Profile ID', 'required');
+			$this->form_validation->set_rules('fb_id', 'Profile ID', 'required');
 			$this->form_validation->set_rules('profile_name', 'Profile Name', 'required');
 			$this->form_validation->set_rules('page_name', 'Page Name', 'required');
 			$this->form_validation->set_rules('page_link', 'Page Link', 'required');
@@ -588,7 +589,8 @@ class Home extends CI_Controller {
 				$this->session->set_flashdata('msg', '<div class="alert alert-danger text-center">All fields are required!! Please try again.</div>');
 				redirect(base_url() . 'home/fb_page_management', 'refresh');
 			} else {
-				$data['profile_id'] = $this->input->post('profile_id');
+				$fbId = $this->input->post('fb_id');
+				$data['fb_id'] = str_replace("FB00", "", $fbId);
 				$data['profile_name'] = $this->input->post('profile_name');
 				$data['page_name'] = $this->input->post('page_name');
 				$data['page_link'] = $this->input->post('page_link');
@@ -602,7 +604,7 @@ class Home extends CI_Controller {
 
 				if ($this->input->post('sav-typ') == 'edit') {
 					$data['id'] = $this->input->post('id');
-					$result = $this->Crud->edit_facebook_group($data);
+					$result = $this->Crud->edit_facebook_page($data);
 					if($result) {
 						$this->session->set_flashdata('msg', '<div class="alert alert-success
 						text-center">Facebook Page Updated Successfully.</div>');
@@ -679,5 +681,101 @@ class Home extends CI_Controller {
 			redirect(base_url() . 'home/login', 'refresh');
 		}
 	}
+
+	/** ------------------------------Facebook Task Management---------------------------- */
+	// Facebook Task Management
+	public function fb_task_management()
+	{
+		if ($this->session->has_userdata('login')) {
+			$page['result'] = $this->Crud->get_facebook_account_data();
+			$this->load->view('header');
+			$this->load->view('fb_task_management', $page);
+		} else {
+			redirect(base_url() . 'home/login', 'refresh');
+		}
+	}
+
+	public function addFacebookTask() {
+		$page['fbAllAccounts'] = $this->Crud->get_facebook_account_data();
+		$page['fbAllGroups'] = $this->Crud->get_facebook_group_data();
+		$page['fbAllPages'] = $this->Crud->get_facebook_page_data();
+		$this->load->view('header');
+		$this->load->view('addFacebookTask', $page);
+	}
+	// Add or update the facebook task details
+	public function add_update_facebook_task() {
+		if ($this->session->has_userdata('login')) {
+			// Set validation rules
+			$this->form_validation->set_rules('profile_id', 'Profile ID', 'required');
+			$this->form_validation->set_rules('profile_name', 'Profile Name', 'required');
+			$this->form_validation->set_rules('page_name', 'Page Name', 'required');
+			$this->form_validation->set_rules('page_link', 'Page Link', 'required');
+			$this->form_validation->set_rules('page_category', 'Page Category', 'required');
+			$this->form_validation->set_rules('page_location', 'Page Location', 'required');
+			$this->form_validation->set_rules('page_followers', 'Page Member', 'required');
+			$this->form_validation->set_rules('page_permissions', 'Page Permission', 'required');
+			if ($this->form_validation->run() == FALSE) {
+				$this->session->set_flashdata('msg', '<div class="alert alert-danger text-center">All fields are required!! Please try again.</div>');
+				redirect(base_url() . 'home/fb_page_management', 'refresh');
+			} else {
+				$data['profile_id'] = $this->input->post('profile_id');
+				$data['profile_name'] = $this->input->post('profile_name');
+				$data['page_name'] = $this->input->post('page_name');
+				$data['page_link'] = $this->input->post('page_link');
+				$data['page_category'] = $this->input->post('page_category');
+				$data['page_location'] = $this->input->post('page_location');
+				$data['page_followers'] = $this->input->post('page_followers');
+				$data['page_permissions'] = $this->input->post('page_permissions');
+				if($this->input->post('status') === '1' || $this->input->post('status') === '0') {
+					$data['status'] = $this->input->post('status');
+				}
+
+				if ($this->input->post('sav-typ') == 'edit') {
+					$data['id'] = $this->input->post('id');
+					$result = $this->Crud->edit_facebook_task($data);
+					if($result) {
+						$this->session->set_flashdata('msg', '<div class="alert alert-success
+						text-center">Facebook Page Updated Successfully.</div>');
+						redirect(base_url() . 'home/fb_page_management', 'refresh');
+					} else {
+						$this->session->set_flashdata('msg', '<div class="alert alert-danger
+						text-center">Facebook Page updation failed. Please try again.</div>');
+						redirect(base_url() . 'home/fb_page_management', 'refresh');
+					}
+				} else {
+					$result = $this->Crud->insert_facebook_task($data);
+					if($result) {
+						$this->session->set_flashdata('msg', '<div class="alert alert-success text-center">Facebook Page Added Successfully.</div>');
+						redirect(base_url() . 'home/fb_page_management', 'refresh');
+						
+					} else {
+						$this->session->set_flashdata('msg', '<div class="alert alert-danger text-center">Facebook Page Can\'t Add.</div>');
+						redirect(base_url() . 'home/fb_page_management', 'refresh');
+					}
+				}
+			}
+		} else {
+			redirect(base_url() . 'home/login', 'refresh');
+		}
+	}
+
+	// Delete facebook page 
+	public function delete_facebook_task() {
+		if ($this->session->has_userdata('login')) {
+			$userId = $this->uri->segment(3);
+			$table = 'fb_page_management';
+			$result = $this->Crud->deleteCommonFunction($userId, $table);
+			if($result) {
+				$this->session->set_flashdata('msg', '<div class="alert alert-success text-center">Facebook Page Deleted Successfully.</div>');
+				echo 1;
+			} else {
+				$this->session->set_flashdata('msg', '<div class="alert alert-danger text-center">Facebook Page Can\'t Delete.</div>');
+				echo 0;
+			}
+		} else {
+			redirect(base_url() . 'home/login', 'refresh');
+		}
+	}
+	
 
 }
