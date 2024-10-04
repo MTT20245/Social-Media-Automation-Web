@@ -128,7 +128,7 @@
 										echo "<td class='home_time_limit'>
                                             <input type='checkbox' class='home_time_limit_checkbox'" . 
                                             ($r["home_time_limit"] == 1 ? 'checked' : '') . ">";
-                                            if (!empty($r['last_time_event'])) {
+                                            if (!empty($r['last_time_home_time_limit'])) {
                                                 echo "<p><b> Last Time Perform: <br>" . date('d-m-Y H:i:s', strtotime($r['last_time_home_time_limit'])) . "</b></p></td>";
                                             }
 

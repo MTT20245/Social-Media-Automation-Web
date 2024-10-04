@@ -344,22 +344,17 @@ class Crud extends CI_Model
 	}
 
 	/** ------------------------------Facebook Task Management---------------------------- */
-	// Get facebook all data
-	// public function get_facebook_all_data()
-	// {
-		// $this->db->select('fbam.*, fbgm.*, fbpm.*');
-		// $this->db->from('fb_account_management as fbam');
-
-		// $this->db->join('fb_group_management as fbgm', 'fbgm.fb_id = fbam.id');
-		// $this->db->join('fb_page_management as fbpm', 'fbpm.fb_id=fbam.id');
-		// $query = $this->db->get();
-		// return $query->result_array();
-	// }
-
-    // Add new facebook task
-	public function insert_facebook_task($data)
+    // Get facebook task data
+	public function get_facebook_task_data()
 	{
-		$this->db->insert('fb_page_management', $data);
+		$query = $this->db->select('*')->from('fb_task_management')->get();
+		return $query->result_array();
+	}
+
+	// Save facebook task
+	public function save_facebook_task($data)
+	{
+		$this->db->insert('fb_task_management', $data);
 		return $this->db->affected_rows();
 	}
 

@@ -50,24 +50,21 @@
                                 <thead>
                                     <tr>
                                         <th class="text-center">Sl No.</th>
-                                        <th class="text-center">Registered Date</th>
-                                        <th class="text-center">Account Code</th>
-                                        <th class="text-center">Name</th>
-                                        <th class="text-center">Profile Link</th>
-                                        <th class="text-center">Account ID</th>
-                                        <th class="text-center">Password</th>
-                                        <th class="text-center">Mobile No.</th>
-                                        <th class="text-center">Email ID</th>
-                                        <th class="text-center">Gender</th>
-                                        <th class="text-center">Religion</th>
-                                        <th class="text-center">Cast</th>
-                                        <th class="text-center">DOB</th>
-                                        <th class="text-center">Age</th>
-                                        <th class="text-center">Location</th>
-                                        <th class="text-center">City</th>
-                                        <th class="text-center">State</th>
-                                        <th class="text-center">Friends</th>
-                                        <th class="text-center">Status</th>
+                                        <th class="text-center">Created At</th>
+                                        <th class="text-center">Task</th>
+                                        <th class="text-center">Content</th>
+                                        <th class="text-center">File Image / Video</th>
+                                        <th class="text-center">Wall</th>
+                                        <th class="text-center">Story</th>
+                                        <th class="text-center">Link</th>
+                                        <th class="text-center">Views - Timing Range</th>
+                                        <th class="text-center">Like Quantity</th>
+                                        <th class="text-center">Share Quantity</th>
+                                        <th class="text-center">Comment Quantity</th>
+                                        <th class="text-center">Facebook Accounts</th>
+                                        <th class="text-center">Facebook Groups</th>
+                                        <th class="text-center">Facebook Pages</th>
+                                        <th class="text-center">Publish / Schedule</th>
                                         <th class="text-center">Action</th>
                                     </tr>
                                 </thead>
@@ -75,30 +72,26 @@
                                     <?php
                                     $i = 0;
                                     foreach ($result as $r) {
-                                        $status = ($r["status"] == 1) ? 'Active' : 'Inactive';
                                         $createdAt = date('d/m/Y H:i:s', strtotime($r['date_time']));
                                         echo "<tr>";
 										echo "";
 										echo "<td>" . ++$i . "</td>";
 										echo "<td class='date_time'>" . $createdAt . "</td>";
-										echo "<td class='id'>FB00" . $r["id"] ."</td>";
-										echo "<td class='name'>" . $r["name"] . "</td>";
-										echo "<td class='profile_link'>" . $r["profile_link"] . "</td>";
-										echo "<td class='account_id'>" . $r["account_id"] . "</td>";
-										echo "<td class='password'>" . $r["password"] . "</td>";
-										echo "<td class='mobile'>" . $r["mobile"] . "</td>";
-										echo "<td class='email'>" . $r["email"] . "</td>";
-										echo "<td class='gender'>" . $r["gender"] . "</td>";
-										echo "<td class='religion'>" . $r["religion"] . "</td>";
-										echo "<td class='cast'>" . $r["cast"] . "</td>";
-										echo "<td class='dob'>" . $r["dob"] . "</td>";
-										echo "<td class='age'>" . $r["age"] . "</td>";
-										echo "<td class='location'>" . $r["location"] . "</td>";
-										echo "<td class='city'>" . $r["city"] . "</td>";
-										echo "<td class='state'>" . $r["state"] . "</td>";
-										echo "<td class='friends'>" . $r["friends"] . "</td>";
-                                        echo "<td class='status'>" . $status . "</td>";
-										echo "<td><a class=\"fa fa-pencil fa-fw editcap\" id='{$r['id']}' href='#'></a>&nbsp;&nbsp;&nbsp;<a class=\"fa fa-trash-o fa-fw delcap\" href='#' id='{$r['id']}'></a></td></tr>";
+										echo "<td class='task'>" . $r["task"] ."</td>";
+										echo "<td class='content'>" . $r["content"] . "</td>";
+										echo "<td class='file'>" . $r["file"] . "</td>";
+										echo "<td class='wall'>" . $r["wall"] . "</td>";
+										echo "<td class='story'>" . $r["story"] . "</td>";
+										echo "<td class='link'>" . $r["link"] . "</td>";
+										echo "<td class='view_timing'>" . $r["view_timing"] . "</td>";
+										echo "<td class='like_qty'>" . $r["like_qty"] . "</td>";
+										echo "<td class='share_qty'>" . $r["share_qty"] . "</td>";
+										echo "<td class='comment_qty'>" . $r["comment_qty"] . "</td>";
+										echo "<td class='accounts'>" . $r["accounts"] . "</td>";
+										echo "<td class='groups'>" . $r["groups"] . "</td>";
+										echo "<td class='pages'>" . $r["pages"] . "</td>";
+										echo "<td class='task_schedule'>" . $r["task_schedule"] . "</td>";
+										echo "<td><a class=\"fa fa-trash-o fa-fw delcap\" href='#' title='Delete task' id='{$r['id']}'></a></td></tr>";
                                     }
                                     ?>
                                 </tbody>
@@ -133,7 +126,7 @@
     });
 
     function addFbTask() {
-        window.location.href = '<?php echo base_url()."home/addFacebookTask"?>';
+        window.location.href = '<?php echo base_url()."home/add_facebook_task"?>';
     }
     
     $(document).ready(function(){
@@ -142,6 +135,30 @@
         backdrop: 'static',
         keyboard: false,
         show: false
+        });
+
+        // Delete the facebook accounts
+        $(".delcap").on('click', function() {
+            var uid = $(this).attr('id');
+            $.confirm({
+                text: "Are you sure you want to delete this facebook task?",
+                confirm: function(button) {
+                    $.ajax({
+                        type: "POST",
+                        url: "<?php echo base_url() . "home/delete_fb_task/"; ?>" + uid,
+                        success: function(data) {
+                            if (data == '1') {
+                                document.location.href = '<?php echo base_url() . "home/fb_task_management"; ?>';
+                            } else {
+                                document.location.href = '<?php echo base_url() . "home/fb_task_management"; ?>';
+                            }
+                        }
+                    });
+                },
+                cancel: function(button) {
+                    return false;
+                }
+            });
         });
 
         // Year wise filtering

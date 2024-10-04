@@ -687,7 +687,7 @@ class Home extends CI_Controller {
 	public function fb_task_management()
 	{
 		if ($this->session->has_userdata('login')) {
-			$page['result'] = $this->Crud->get_facebook_account_data();
+			$page['result'] = $this->Crud->get_facebook_task_data();
 			$this->load->view('header');
 			$this->load->view('fb_task_management', $page);
 		} else {
@@ -695,87 +695,140 @@ class Home extends CI_Controller {
 		}
 	}
 
-	public function addFacebookTask() {
-		$page['fbAllAccounts'] = $this->Crud->get_facebook_account_data();
-		$page['fbAllGroups'] = $this->Crud->get_facebook_group_data();
-		$page['fbAllPages'] = $this->Crud->get_facebook_page_data();
-		$this->load->view('header');
-		$this->load->view('addFacebookTask', $page);
-	}
-	// Add or update the facebook task details
-	public function add_update_facebook_task() {
+	// Insert facebook task
+	public function add_facebook_task() {
 		if ($this->session->has_userdata('login')) {
-			// Set validation rules
-			$this->form_validation->set_rules('profile_id', 'Profile ID', 'required');
-			$this->form_validation->set_rules('profile_name', 'Profile Name', 'required');
-			$this->form_validation->set_rules('page_name', 'Page Name', 'required');
-			$this->form_validation->set_rules('page_link', 'Page Link', 'required');
-			$this->form_validation->set_rules('page_category', 'Page Category', 'required');
-			$this->form_validation->set_rules('page_location', 'Page Location', 'required');
-			$this->form_validation->set_rules('page_followers', 'Page Member', 'required');
-			$this->form_validation->set_rules('page_permissions', 'Page Permission', 'required');
-			if ($this->form_validation->run() == FALSE) {
-				$this->session->set_flashdata('msg', '<div class="alert alert-danger text-center">All fields are required!! Please try again.</div>');
-				redirect(base_url() . 'home/fb_page_management', 'refresh');
-			} else {
-				$data['profile_id'] = $this->input->post('profile_id');
-				$data['profile_name'] = $this->input->post('profile_name');
-				$data['page_name'] = $this->input->post('page_name');
-				$data['page_link'] = $this->input->post('page_link');
-				$data['page_category'] = $this->input->post('page_category');
-				$data['page_location'] = $this->input->post('page_location');
-				$data['page_followers'] = $this->input->post('page_followers');
-				$data['page_permissions'] = $this->input->post('page_permissions');
-				if($this->input->post('status') === '1' || $this->input->post('status') === '0') {
-					$data['status'] = $this->input->post('status');
+			$page['fbAllAccounts'] = $this->Crud->get_facebook_account_data();
+			$page['fbAllGroups'] = $this->Crud->get_facebook_group_data();
+			$page['fbAllPages'] = $this->Crud->get_facebook_page_data();
+			$this->load->view('header');
+			$this->load->view('add_facebook_task', $page);
+		} else {
+			redirect(base_url() . 'home/login', 'refresh');
+		}
+	}
+
+	// Save facebook tasks
+	public function save_facebook_task() {
+		if ($this->session->has_userdata('login')) {
+			$data['task'] = $this->input->post('work');
+			if(isset($data['task']) && $data['task'] == "posting") {
+				$data['content'] = $this->input->post('content');
+				$data['file'] = $this->input->post('file');
+				$data['task_schedule'] = $this->input->post('posting_schedule');
+				$accounts = $this->input->post('accounts');
+				if(isset($accounts)) {
+					$data['accounts'] = implode(',', $accounts);
+				}
+				$groups = $this->input->post('groups');
+				if(isset($groups)) {
+					$data['groups'] = implode(',', $groups);
+				}
+				$pages = $this->input->post('pages');
+				if(isset($pages)) {
+					$data['pages'] = implode(',', $pages);
+				}
+				$wall = $this->input->post('posting_wall');
+				if($wall == 'on') {
+					$data['wall'] = 1;
+				} else {
+					$data['wall'] = 0;
 				}
 
-				if ($this->input->post('sav-typ') == 'edit') {
-					$data['id'] = $this->input->post('id');
-					$result = $this->Crud->edit_facebook_task($data);
-					if($result) {
-						$this->session->set_flashdata('msg', '<div class="alert alert-success
-						text-center">Facebook Page Updated Successfully.</div>');
-						redirect(base_url() . 'home/fb_page_management', 'refresh');
-					} else {
-						$this->session->set_flashdata('msg', '<div class="alert alert-danger
-						text-center">Facebook Page updation failed. Please try again.</div>');
-						redirect(base_url() . 'home/fb_page_management', 'refresh');
-					}
+				$story = $this->input->post('posting_story');
+				if($story == 'on') {
+					$data['story'] = 1;
 				} else {
-					$result = $this->Crud->insert_facebook_task($data);
-					if($result) {
-						$this->session->set_flashdata('msg', '<div class="alert alert-success text-center">Facebook Page Added Successfully.</div>');
-						redirect(base_url() . 'home/fb_page_management', 'refresh');
-						
-					} else {
-						$this->session->set_flashdata('msg', '<div class="alert alert-danger text-center">Facebook Page Can\'t Add.</div>');
-						redirect(base_url() . 'home/fb_page_management', 'refresh');
-					}
+					$data['story'] = 0;
 				}
+			} elseif(isset($data['task']) && $data['task'] == "video_promoting") {
+				$data['link'] = $this->input->post('video_link');
+				$data['view_timing'] = $this->input->post('video_view_timing');
+				$data['like_qty'] = $this->input->post('video_like_qty');
+				$data['share_qty'] = $this->input->post('video_share_qty');
+				$data['comment_qty'] = $this->input->post('video_comment_qty');
+				$data['task_schedule'] = $this->input->post('video_schedule');
+				$accounts = $this->input->post('accounts');
+				if(isset($accounts)) {
+					$data['accounts'] = implode(',', $accounts);
+				}
+				$groups = $this->input->post('groups');
+				if(isset($groups)) {
+					$data['groups'] = implode(',', $groups);
+				}
+				$pages = $this->input->post('pages');
+				if(isset($pages)) {
+					$data['pages'] = implode(',', $pages);
+				}
+			} elseif(isset($data['task']) && $data['task'] == "reel_promoting") {
+				$data['link'] = $this->input->post('reel_link');
+				$data['view_timing'] = $this->input->post('reel_view_timing');
+				$data['like_qty'] = $this->input->post('reel_like_qty');
+				$data['share_qty'] = $this->input->post('reel_share_qty');
+				$data['comment_qty'] = $this->input->post('reel_comment_qty');
+				$data['task_schedule'] = $this->input->post('reel_schedule');
+				$accounts = $this->input->post('accounts');
+				if(isset($accounts)) {
+					$data['accounts'] = implode(',', $accounts);
+				}
+				$groups = $this->input->post('groups');
+				if(isset($groups)) {
+					$data['groups'] = implode(',', $groups);
+				}
+				$pages = $this->input->post('pages');
+				if(isset($pages)) {
+					$data['pages'] = implode(',', $pages);
+				}
+			} elseif(isset($data['task']) && $data['task'] == "post_promoting") {
+				$data['link'] = $this->input->post('post_link');
+				$data['like_qty'] = $this->input->post('post_like_qty');
+				$data['share_qty'] = $this->input->post('post_share_qty');
+				$data['comment_qty'] = $this->input->post('post_comment_qty');
+				$data['task_schedule'] = $this->input->post('post_schedule');
+				$accounts = $this->input->post('accounts');
+				if(isset($accounts)) {
+					$data['accounts'] = implode(',', $accounts);
+				}
+				$groups = $this->input->post('groups');
+				if(isset($groups)) {
+					$data['groups'] = implode(',', $groups);
+				}
+				$pages = $this->input->post('pages');
+				if(isset($pages)) {
+					$data['pages'] = implode(',', $pages);
+				}
+			} elseif(isset($data['task']) && $data['task'] == "direct_message") {
+				$this->session->set_flashdata('msg', '<div class="alert alert-danger text-center">Direct Message functionality not running now.</div>');
+				redirect(base_url() . 'home/add_facebook_task', 'refresh');
+			} else {
+				$this->session->set_flashdata('msg', '<div class="alert alert-danger text-center">Please Select Valid Work.</div>');
+				redirect(base_url() . 'home/add_facebook_task', 'refresh');
 			}
+
+			$this->Crud->save_facebook_task($data);
+			$this->session->set_flashdata('msg', '<div class="alert alert-success text-center">Facebook Task Added Successfully.</div>');
+			redirect(base_url() . 'home/add_facebook_task', 'refresh');
 		} else {
 			redirect(base_url() . 'home/login', 'refresh');
 		}
 	}
 
 	// Delete facebook page 
-	public function delete_facebook_task() {
+	public function delete_fb_task() {
 		if ($this->session->has_userdata('login')) {
 			$userId = $this->uri->segment(3);
-			$table = 'fb_page_management';
+			$table = 'fb_task_management';
 			$result = $this->Crud->deleteCommonFunction($userId, $table);
 			if($result) {
-				$this->session->set_flashdata('msg', '<div class="alert alert-success text-center">Facebook Page Deleted Successfully.</div>');
+				$this->session->set_flashdata('msg', '<div class="alert alert-success text-center">Facebook Task Deleted Successfully.</div>');
 				echo 1;
 			} else {
-				$this->session->set_flashdata('msg', '<div class="alert alert-danger text-center">Facebook Page Can\'t Delete.</div>');
+				$this->session->set_flashdata('msg', '<div class="alert alert-danger text-center">Facebook Task Can\'t Delete.</div>');
 				echo 0;
 			}
 		} else {
 			redirect(base_url() . 'home/login', 'refresh');
 		}
 	}
-	
 
 }

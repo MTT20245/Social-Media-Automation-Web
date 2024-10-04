@@ -32,11 +32,11 @@
                 </div>
 
                 <div>
-                  <?php echo form_open('home/save_facebook_task', ['id'=>'save_facebook_task'])?>
-                    
+                  <?php $data = array('role' => 'form');
+                    echo form_open_multipart("home/save_facebook_task", $data); ?>
                     <div class="form-group">
                         <label>Select Work<span style="color:#FF0000;"><sup>*</sup></span></label>
-                        <select name="work[]" id="work" class="form-control work" required>
+                        <select name="work" id="work" class="form-control work" required>
                             <option Selected value="">Select Work</option>
                             <option value="posting">Posting</option>
                             <option value="video_promoting">Video Promoting</option>
@@ -50,25 +50,33 @@
                     <div id="posting_fields" class="form-group form-conditional" style="display:none;">
                         <div class="form-group">
                             <label>Content Writing<span style="color:#FF0000;"><sup>*</sup></span></label>
-                            <textarea class="form-control" id="" rows="3" placeholder="Write content here...."></textarea>
+                            <textarea name="content" class="form-control" rows="3" placeholder="Write content here...."></textarea>
                         </div>
 
                         <div class="form-group">
                             <label>Select Image / Video<span style="color:#FF0000;"><sup>*</sup></span></label>
-                            <input type="file" class="form-control" id="file">
+                            <input type="file" name="file" class="form-control file">
                         </div>
 
                         <div class="form-group">
                             <label>Publish / Schedule (Date & Time)<span style="color:#FF0000;"><sup>*</sup></span></label>
-                            <input type="datetime-local" class="form-control" name="publish" id="publish">
+                            <input type="datetime-local" name="posting_schedule" class="form-control schedule">
                         </div>
 
                         <label>Select Place<span style="color:#FF0000;"><sup>*</sup></span></label>
                         <div class="form-group form-control">
-                            <label class="check-label"><input type="checkbox" value="wall" class="fb_account_list" /> Wall</label>
-                            <label class="check-label"><input type="checkbox" value="story" class="fb_account_list" /> Story</label>
-                            <label class="check-label"><input type="checkbox" value="group" class="fb_group_list" /> Group</label>
-                            <label class="check-label"><input type="checkbox" value="page" class="fb_page_list" /> Page</label>
+                            <label class="check-label">
+                                <input type="checkbox" name="posting_wall" class="fb_account_list" /> Wall
+                            </label>
+                            <label class="check-label">
+                                <input type="checkbox" name="posting_story" class="fb_account_list" /> Story
+                            </label>
+                            <label class="check-label">
+                                <input type="checkbox" name="posting_group" value="group" class="fb_group_list" /> Group
+                            </label>
+                            <label class="check-label">
+                                <input type="checkbox" name="posting_page" value="page" class="fb_page_list" /> Page
+                            </label>
                         </div>
                     </div>
 
@@ -76,39 +84,45 @@
                     <div id="video_promoting" class="form-group form-conditional" style="display:none;">
                         <div class="form-group">
                             <label>Enter Video Link<span style="color:#FF0000;"><sup>*</sup></span></label>
-                            <input type="text" name="video_link" id="video_link" class="form-control" placeholder="Enter Video Link...">
+                            <input type="text" name="video_link" class="form-control" placeholder="Enter Video Link...">
                         </div>
 
                         <div class="form-group">
                             <label>Enter Views Timing Range<span style="color:#FF0000;"><sup>*</sup></span></label>
-                            <input type="number" class="form-control" id="views_timing" placeholder="Enter Views Timing Range...">
+                            <input type="number" name="video_view_timing" class="form-control" placeholder="Enter Views Timing Range...">
                         </div>
 
                         <div class="form-group">
                             <label>Enter Likes Quantity<span style="color:#FF0000;"><sup>*</sup></span></label>
-                            <input type="number" class="form-control" id="like_quantity" placeholder="Enter Like Quantity...">
+                            <input type="number" name="video_like_qty" class="form-control" placeholder="Enter Like Quantity...">
                         </div>
 
                         <div class="form-group">
                             <label>Enter Share Quantity<span style="color:#FF0000;"><sup>*</sup></span></label>
-                            <input type="number" class="form-control" id="share_quantity" placeholder="Enter Share Quantity...">
+                            <input type="number" name="video_share_qty" class="form-control" placeholder="Enter Share Quantity...">
                         </div>
 
                         <div class="form-group">
                             <label>Enter Comments Quantity<span style="color:#FF0000;"><sup>*</sup></span></label>
-                            <input type="number" class="form-control" id="comments_quantity" placeholder="Enter Comments Quantity...">
+                            <input type="number" name="video_comment_qty" class="form-control" placeholder="Enter Comments Quantity...">
                         </div>
 
                         <div class="form-group">
                             <label>Publish / Schedule (Date & Time)<span style="color:#FF0000;"><sup>*</sup></span></label>
-                            <input type="datetime-local" class="form-control" name="publish" id="publish">
+                            <input type="datetime-local" name="video_schedule" class="form-control schedule">
                         </div>
 
                         <label>Select Place<span style="color:#FF0000;"><sup>*</sup></span></label>
                         <div class="form-group form-control">
-                            <label class="check-label"><input type="checkbox" value="wall" class="fb_account_list" /> Profile</label>
-                            <label class="check-label"><input type="checkbox" value="group"class="fb_group_list" /> Group</label>
-                            <label class="check-label"><input type="checkbox" value="page" class="fb_page_list" /> Page</label>
+                            <label class="check-label">
+                                <input type="checkbox" name="video_profile" value="profile" class="fb_account_list" /> Profile
+                            </label>
+                            <label class="check-label">
+                                <input type="checkbox" name="video_group" value="group"class="fb_group_list" /> Group
+                            </label>
+                            <label class="check-label">
+                                <input type="checkbox" name="video_page" value="page" class="fb_page_list" /> Page
+                            </label>
                         </div>
                     </div>
 
@@ -116,39 +130,45 @@
                     <div id="reel_promoting" class="form-group form-conditional" style="display:none;">
                         <div class="form-group">
                             <label>Enter Reel Link<span style="color:#FF0000;"><sup>*</sup></span></label>
-                            <input type="text" name="reel_link" id="reel_link" class="form-control" placeholder="Enter Reel Link...">
+                            <input type="text" name="reel_link" class="form-control" placeholder="Enter Reel Link...">
                         </div>
 
                         <div class="form-group">
                             <label>Enter Views Timing Range<span style="color:#FF0000;"><sup>*</sup></span></label>
-                            <input type="number" class="form-control" id="views_timing" placeholder="Enter Views Timing Range...">
+                            <input type="number" name="reel_view_timing" class="form-control" placeholder="Enter Views Timing Range...">
                         </div>
 
                         <div class="form-group">
                             <label>Enter Likes Quantity<span style="color:#FF0000;"><sup>*</sup></span></label>
-                            <input type="number" class="form-control" id="like_quantity" placeholder="Enter Like Quantity...">
+                            <input type="number" name="reel_like_qty" class="form-control" placeholder="Enter Like Quantity...">
                         </div>
 
                         <div class="form-group">
                             <label>Enter Share Quantity<span style="color:#FF0000;"><sup>*</sup></span></label>
-                            <input type="number" class="form-control" id="share_quantity" placeholder="Enter Share Quantity...">
+                            <input type="number" name="reel_share_qty" class="form-control" placeholder="Enter Share Quantity...">
                         </div>
 
                         <div class="form-group">
                             <label>Enter Comments Quantity<span style="color:#FF0000;"><sup>*</sup></span></label>
-                            <input type="number" class="form-control" id="comments_quantity" placeholder="Enter Comments Quantity...">
+                            <input type="number" name="reel_comment_qty" class="form-control" placeholder="Enter Comments Quantity...">
                         </div>
 
                         <div class="form-group">
                             <label>Publish / Schedule (Date & Time)<span style="color:#FF0000;"><sup>*</sup></span></label>
-                            <input type="datetime-local" class="form-control" name="publish" id="publish">
+                            <input type="datetime-local" name="reel_schedule" class="form-control schedule">
                         </div>
 
                         <label>Select Place<span style="color:#FF0000;"><sup>*</sup></span></label>
                         <div class="form-group form-control">
-                            <label class="check-label"><input type="checkbox" value="wall"  class="fb_account_list" /> Profile</label>
-                            <label class="check-label"><input type="checkbox" value="group" class="fb_group_list"  /> Group</label>
-                            <label class="check-label"><input type="checkbox" value="page"  class="fb_page_list" /> Page</label>
+                            <label class="check-label">
+                                <input type="checkbox" name="reel_profile" value="profile"  class="fb_account_list" /> Profile
+                            </label>
+                            <label class="check-label">
+                                <input type="checkbox" name="reel_group" value="group" class="fb_group_list"  /> Group
+                            </label>
+                            <label class="check-label">
+                                <input type="checkbox" name="reel_page" value="page"  class="fb_page_list" /> Page
+                            </label>
                         </div>
                     </div>
 
@@ -156,34 +176,40 @@
                     <div id="post_promoting" class="form-group form-conditional" style="display:none;">
                         <div class="form-group">
                             <label>Enter Post Link<span style="color:#FF0000;"><sup>*</sup></span></label>
-                            <input type="text" name="post_link" id="post_link" class="form-control" placeholder="Enter Post Link...">
+                            <input type="text" name="post_link" class="form-control" placeholder="Enter Post Link...">
                         </div>
 
                         <div class="form-group">
                             <label>Enter Likes Quantity<span style="color:#FF0000;"><sup>*</sup></span></label>
-                            <input type="number" class="form-control" id="like_quantity" placeholder="Enter Like Quantity...">
+                            <input type="number" name="post_like_qty" class="form-control" placeholder="Enter Like Quantity...">
                         </div>
 
                         <div class="form-group">
                             <label>Enter Share Quantity<span style="color:#FF0000;"><sup>*</sup></span></label>
-                            <input type="number" class="form-control" id="share_quantity" placeholder="Enter Share Quantity...">
+                            <input type="number" name="post_share_qty" class="form-control" placeholder="Enter Share Quantity...">
                         </div>
 
                         <div class="form-group">
                             <label>Enter Comments Quantity<span style="color:#FF0000;"><sup>*</sup></span></label>
-                            <input type="number" class="form-control" id="comments_quantity" placeholder="Enter Comments Quantity...">
+                            <input type="number" name="post_comment_qty" class="form-control" placeholder="Enter Comments Quantity...">
                         </div>
 
                         <div class="form-group">
                             <label>Publish / Schedule (Date & Time)<span style="color:#FF0000;"><sup>*</sup></span></label>
-                            <input type="datetime-local" class="form-control" name="publish" id="publish">
+                            <input type="datetime-local" name="post_schedule" class="form-control schedule">
                         </div>
 
                         <label>Select Place<span style="color:#FF0000;"><sup>*</sup></span></label>
                         <div class="form-group form-control">
-                            <label class="check-label"><input type="checkbox" value="wall" class="fb_account_list" /> Profile</label>
-                            <label class="check-label"><input type="checkbox" value="group"class="fb_group_list"  /> Group</label>
-                            <label class="check-label"><input type="checkbox" value="page" class="fb_page_list" /> Page</label>
+                            <label class="check-label">
+                                <input type="checkbox" name="post_profile" value="profile" class="fb_account_list" /> Profile
+                            </label>
+                            <label class="check-label">
+                                <input type="checkbox" name="post_group" value="group"class="fb_group_list"  /> Group
+                            </label>
+                            <label class="check-label">
+                                <input type="checkbox" name="post_page" value="page" class="fb_page_list" /> Page
+                            </label>
                         </div>
                     </div>
 
@@ -195,7 +221,7 @@
                             <table class="table table-striped table-bordered table-hover dt-responsive text-center" id="dataTables-account">
                                 <thead>
                                     <tr>
-                                        <th class="text-center"><input type="checkbox" id="account_select_all"></th>
+                                        <th class="text-center"><input type="checkbox" class="account_select_all"></th>
                                         <th class="text-center">Account Code</th>
                                         <th class="text-center">Name</th>
                                         <th class="text-center">Profile Link</th>
@@ -238,7 +264,7 @@
                                     foreach ($fbAllAccounts as $r) {
                                         echo "<tr>";
 										echo "";
-                                        echo "<td><input type='checkbox' class='account_checkbox' name='accounts[]'></td>";
+                                        echo "<td><input type='checkbox' class='account_checkbox' name='accounts[]' value='". $r["id"] ."'></td>";
 										echo "<td class='id'>FB00" . $r["id"] ."</td>";
 										echo "<td class='name'>" . $r["name"] . "</td>";
 										echo "<td class='profile_link'>" . $r["profile_link"] . "</td>";
@@ -271,7 +297,7 @@
                             <table class="table table-striped table-bordered table-hover dt-responsive text-center" id="dataTables-group">
                                 <thead>
                                     <tr>
-                                        <th class="text-center"><input type="checkbox" id="group_select_all"></th>
+                                        <th class="text-center"><input type="checkbox" class="group_select_all"></th>
                                         <th class="text-center">Facebook Id</th>
                                         <th class="text-center">Profile Name</th>
                                         <th class="text-center">Group Code</th>
@@ -303,7 +329,7 @@
                                         $status = ($r["status"] == 1) ? 'Active' : 'Inactive';
                                         echo "<tr>";
 										echo "";
-                                        echo "<td><input type='checkbox' class='group_checkbox' name='groupIds[".$key."][".$r['id']."]'></td>";
+                                        echo "<td><input type='checkbox' class='group_checkbox' name='groups[]' value='". $r["id"] ."'></td>";
 										echo "<td class='fb_id'>FB00" . $r["fb_id"] . "</td>";
 										echo "<td class='profile_name'>" . $r["profile_name"] . "</td>";
 										echo "<td class='account_id'>FBG00" . $r["id"] ."</td>";
@@ -330,7 +356,7 @@
                             <table class="table table-striped table-bordered table-hover dt-responsive text-center" id="dataTables-page">
                                 <thead>
                                     <tr>
-                                    <th class="text-center"><input type="checkbox" id="page_select_all"></th>
+                                    <th class="text-center"><input type="checkbox" class="page_select_all"></th>
                                         <th class="text-center">Facebook Id</th>
                                         <th class="text-center">Profile Name</th>
                                         <th class="text-center">Page Code</th>
@@ -362,7 +388,7 @@
                                         $status = ($r["status"] == 1) ? 'Active' : 'Inactive';
                                         echo "<tr>";
 										echo "";
-                                        echo "<td><input type='checkbox' class='page_checkbox' name='pageIds[".$key."][".$r['id']."]'></td>";
+                                        echo "<td><input type='checkbox' class='page_checkbox' name='pages[]' value='". $r["id"] ."'></td>";
 										echo "<td class='fb_id'>FB00" . $r["fb_id"] . "</td>";
 										echo "<td class='profile_name'>" . $r["profile_name"] . "</td>";
 										echo "<td class='account_id'>FBP00" . $r["id"] ."</td>";
@@ -466,7 +492,7 @@
         });
 
         // Give select all functionality on facebook account table
-        $('#account_select_all').click(function() {
+        $('.account_select_all').click(function() {
             var isChecked = $(this).is(':checked');
             $('.account_checkbox').prop('checked', isChecked);
         });
@@ -474,14 +500,14 @@
         // Unselect checkbox when not all selected accounts
         $('.account_checkbox').click(function() {
             if ($('.account_checkbox:checked').length == $('.account_checkbox').length) {
-                $('#account_select_all').prop('checked', true);
+                $('.account_select_all').prop('checked', true);
             } else {
-                $('#account_select_all').prop('checked', false);
+                $('.account_select_all').prop('checked', false);
             }
         });
 
         // Give select all functionality on facebook group table
-        $('#group_select_all').click(function() {
+        $('.group_select_all').click(function() {
             var isChecked = $(this).is(':checked');
             $('.group_checkbox').prop('checked', isChecked);
         });
@@ -489,14 +515,14 @@
         // Unselect checkbox when not all selected groups
         $('.group_checkbox').click(function() {
             if ($('.group_checkbox:checked').length == $('.group_checkbox').length) {
-                $('#group_select_all').prop('checked', true);
+                $('.group_select_all').prop('checked', true);
             } else {
-                $('#group_select_all').prop('checked', false);
+                $('.group_select_all').prop('checked', false);
             }
         });
 
         // Give select all functionality on facebook page table
-        $('#page_select_all').click(function() {
+        $('.page_select_all').click(function() {
             var isChecked = $(this).is(':checked');
             $('.page_checkbox').prop('checked', isChecked);
         });
@@ -504,9 +530,9 @@
         // Unselect checkbox when not all selected pages
         $('.page_checkbox').click(function() {
             if ($('.page_checkbox:checked').length == $('.page_checkbox').length) {
-                $('#page_select_all').prop('checked', true);
+                $('.page_select_all').prop('checked', true);
             } else {
-                $('#page_select_all').prop('checked', false);
+                $('.page_select_all').prop('checked', false);
             }
         });
 
