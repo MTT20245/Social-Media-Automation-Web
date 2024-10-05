@@ -169,12 +169,12 @@
 										echo "<td class='company_model'>" . $r["company_model"] . "</td>";
 										echo "<td class='android_version'>" . $r["android_version"] . "</td>";
 										echo "<td class='imei_number'>" . $r["imei_number"] . "</td>";
-                                        echo "<td class='facebook'>".$totalFacebookAccount."</td>";
-                                        echo "<td class='instagram'>0</td>";
-                                        echo "<td class='twitter'>0</td>";
-                                        echo "<td class='youtube'>0</td>";
-                                        echo "<td class='tiktok'>0</td>";
-                                        echo "<td class='whatsapp'>0</td>";
+                                        echo "<td class='facebook'>".$allAccounts['facebook_count']."</td>";
+                                        echo "<td class='instagram'>".$allAccounts['instagram_count']."</td>";
+                                        echo "<td class='twitter'>".$allAccounts['twitter_count']."</td>";
+                                        echo "<td class='youtube'>".$allAccounts['youtube_count']."</td>";
+                                        echo "<td class='tiktok'>".$allAccounts['tiktok_count']."</td>";
+                                        echo "<td class='whatsapp'>".$allAccounts['whatsapp_count']."</td>";
 										echo "<td class='add text-center'><button class='add_social_account' id='{$r['id']}'>Add Social Accounts</button></td>";
 										echo "<td class='add text-center'><button class='validate_accounts' id='{$r['id']}'>Validate Accounts</button></td>";
                                         echo "<td class='status'>" . $status . "</td>";

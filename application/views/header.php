@@ -117,7 +117,9 @@
                             <li>
                                 <a class="active" href="<?php echo base_url(); ?>home/dashboard" id="dashboard"><i class="fa fa-tachometer fa-fw"></i>&nbsp;Dashboard</a>
                             </li>
-                        <?php } if (has_permission($userPermissions, 'user_management', 'view')) { ?>
+                        <?php } else {
+                            redirect(base_url() . 'home/no_user_permissions', 'refresh');
+                        } if (has_permission($userPermissions, 'user_management', 'view')) { ?>
                             <li>
                                 <a href="<?php echo base_url(); ?>home/user_management" id="user_management"><i class="fa fa-user fa-fw"></i>&nbsp; User Management</a>
                             </li>

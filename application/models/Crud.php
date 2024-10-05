@@ -11,6 +11,7 @@ class Crud extends CI_Model
     // Check if the user exists in the database
     public function userLoginAuth($email, $password) {
         $this->db->where('email', $email);
+        $this->db->where('status', '1');
         $query = $this->db->get('login');
 
         // Check if user exists
@@ -231,10 +232,20 @@ class Crud extends CI_Model
 		return $this->db->affected_rows();
 	}
 
-	// Get total acounts added
-	public function getTotalAccounts($tableName) {
-		$total = $this->db->count_all($tableName);
-		return $total;
+	// Get all acounts count
+	public function get_all_accounts_count() {
+		$query = $this->db->query("
+			SELECT 
+				SUM(CASE WHEN platform = 'facebook' THEN 1 ELSE 0 END) AS facebook_count,
+				SUM(CASE WHEN platform = 'instagram' THEN 1 ELSE 0 END) AS instagram_count,
+				SUM(CASE WHEN platform = 'twitter' THEN 1 ELSE 0 END) AS twitter_count,
+				SUM(CASE WHEN platform = 'youtube' THEN 1 ELSE 0 END) AS youtube_count,
+				SUM(CASE WHEN platform = 'tiktok' THEN 1 ELSE 0 END) AS tiktok_count,
+				SUM(CASE WHEN platform = 'whatsApp' THEN 1 ELSE 0 END) AS whatsapp_count
+			FROM social_media_accounts
+		");
+		
+		return $query->row_array();
 	}
 
 	/** ------------------------------Facebook Group Management---------------------------- */
@@ -365,6 +376,18 @@ class Crud extends CI_Model
 		$this->db->update('fb_page_management', $data);
 		return $this->db->affected_rows();
 	}
+
+	// Check posting file if exists
+	public function get_posting_file_if_exists($userId) {
+		$query = $this->db->select('file')
+					->from('fb_task_management')
+					->where('id', $userId)->get();
+		if ($query->num_rows() > 0) {
+            return $query->row()->file;
+        } else {
+            return null;
+        }
+	} 
 
 
 }

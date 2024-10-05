@@ -153,6 +153,16 @@ class Home extends CI_Controller {
 		}
 	}
 
+	// No user permissions then goto this page
+	public function no_user_permissions()
+	{
+		if ($this->session->has_userdata('login')) {
+			$this->load->view('no_user_permissions');
+		} else {
+			redirect(base_url() . 'home/login', 'refresh');
+		}
+	}
+
 	// Get user permissions
     public function get_user_permissions() {
 		if ($this->session->has_userdata('login')) {
@@ -186,7 +196,7 @@ class Home extends CI_Controller {
 	{
 		if ($this->session->has_userdata('login')) {
 			$page['result'] = $this->Crud->get_mobile_management_data();
-			$page['totalFacebookAccount'] = $this->Crud->getTotalAccounts('fb_account_management');
+			$page['allAccounts'] = $this->Crud->get_all_accounts_count();
 			$this->load->view('header');
 			$this->load->view('mobile_management', $page);
 		} else {
@@ -695,7 +705,7 @@ class Home extends CI_Controller {
 		}
 	}
 
-	// Insert facebook task
+	// Add facebook task page
 	public function add_facebook_task() {
 		if ($this->session->has_userdata('login')) {
 			$page['fbAllAccounts'] = $this->Crud->get_facebook_account_data();
@@ -712,30 +722,64 @@ class Home extends CI_Controller {
 	public function save_facebook_task() {
 		if ($this->session->has_userdata('login')) {
 			$data['task'] = $this->input->post('work');
+			// Isert data according to the task
 			if(isset($data['task']) && $data['task'] == "posting") {
 				$data['content'] = $this->input->post('content');
-				$data['file'] = $this->input->post('file');
 				$data['task_schedule'] = $this->input->post('posting_schedule');
 				$accounts = $this->input->post('accounts');
+				$groups = $this->input->post('groups');
+				$pages = $this->input->post('pages');
+				$wall = $this->input->post('posting_wall');
+				$story = $this->input->post('posting_story');
+
+
+				// File store if it's exists
+				if (!empty($fileName = $_FILES['posting_file']['name'])) {
+					// Set file path and restrictions
+					$config['upload_path'] = 'assets/postingFiles'; // file uploads in this folder
+					$config['allowed_types'] = 'jpg|jpeg|png|gif|bmp|webp|mp4|avi|mov|wmv|mkv|flv|webm';
+					$config['max_size'] = 1048576; // 1 Gb maximum file size define
+					$newFileName = time() . '_' .$fileName;
+					$config['file_name'] = $newFileName;
+
+					// Load upload library
+					$this->load->library('upload', $config);
+					
+					// Save posting files
+					if ($this->upload->do_upload('posting_file')) {
+						$uploadedData = $this->upload->data();
+						// Store file name in the database
+						$data['file'] = $uploadedData['file_name'];
+					} else {
+						$error = $this->upload->display_errors();
+						$this->session->set_flashdata('msg', '<div class="alert alert-danger text-center">'.$error.'</div>');
+						redirect(base_url() . 'home/add_facebook_task', 'refresh');
+					}
+				}
+				
+				// Insert all facebook accounts with comma separated
 				if(isset($accounts)) {
 					$data['accounts'] = implode(',', $accounts);
 				}
-				$groups = $this->input->post('groups');
+				
+				// Insert all facebook groups with comma separated
 				if(isset($groups)) {
 					$data['groups'] = implode(',', $groups);
 				}
-				$pages = $this->input->post('pages');
+
+				// Insert all facebook pages with comma separated
 				if(isset($pages)) {
 					$data['pages'] = implode(',', $pages);
 				}
-				$wall = $this->input->post('posting_wall');
+				
+				// Insert wall value if checkboxes checked
 				if($wall == 'on') {
 					$data['wall'] = 1;
 				} else {
 					$data['wall'] = 0;
 				}
 
-				$story = $this->input->post('posting_story');
+				// Insert story value if checkboxes checked
 				if($story == 'on') {
 					$data['story'] = 1;
 				} else {
@@ -749,14 +793,20 @@ class Home extends CI_Controller {
 				$data['comment_qty'] = $this->input->post('video_comment_qty');
 				$data['task_schedule'] = $this->input->post('video_schedule');
 				$accounts = $this->input->post('accounts');
+				$groups = $this->input->post('groups');
+				$pages = $this->input->post('pages');
+
+				// Insert all facebook accounts with comma separated
 				if(isset($accounts)) {
 					$data['accounts'] = implode(',', $accounts);
 				}
-				$groups = $this->input->post('groups');
+
+				// Insert all facebook groups with comma separated
 				if(isset($groups)) {
 					$data['groups'] = implode(',', $groups);
 				}
-				$pages = $this->input->post('pages');
+
+				// Insert all facebook pages with comma separated
 				if(isset($pages)) {
 					$data['pages'] = implode(',', $pages);
 				}
@@ -768,14 +818,20 @@ class Home extends CI_Controller {
 				$data['comment_qty'] = $this->input->post('reel_comment_qty');
 				$data['task_schedule'] = $this->input->post('reel_schedule');
 				$accounts = $this->input->post('accounts');
+				$groups = $this->input->post('groups');
+				$pages = $this->input->post('pages');
+
+				// Insert all facebook accounts with comma separated
 				if(isset($accounts)) {
 					$data['accounts'] = implode(',', $accounts);
 				}
-				$groups = $this->input->post('groups');
+
+				// Insert all facebook groups with comma separated
 				if(isset($groups)) {
 					$data['groups'] = implode(',', $groups);
 				}
-				$pages = $this->input->post('pages');
+
+				// Insert all facebook pages with comma separated
 				if(isset($pages)) {
 					$data['pages'] = implode(',', $pages);
 				}
@@ -786,20 +842,27 @@ class Home extends CI_Controller {
 				$data['comment_qty'] = $this->input->post('post_comment_qty');
 				$data['task_schedule'] = $this->input->post('post_schedule');
 				$accounts = $this->input->post('accounts');
+				$groups = $this->input->post('groups');
+				$pages = $this->input->post('pages');
+
+				// Insert all facebook accounts with comma separated
 				if(isset($accounts)) {
 					$data['accounts'] = implode(',', $accounts);
 				}
-				$groups = $this->input->post('groups');
+
+				// Insert all facebook groups with comma separated
 				if(isset($groups)) {
 					$data['groups'] = implode(',', $groups);
 				}
-				$pages = $this->input->post('pages');
+
+				// Insert all facebook pages with comma separated
 				if(isset($pages)) {
 					$data['pages'] = implode(',', $pages);
 				}
 			} elseif(isset($data['task']) && $data['task'] == "direct_message") {
-				$this->session->set_flashdata('msg', '<div class="alert alert-danger text-center">Direct Message functionality not running now.</div>');
-				redirect(base_url() . 'home/add_facebook_task', 'refresh');
+				$data['message'] = $this->input->post('message');
+				$data['message_qty'] = $this->input->post('message_qty');
+				$data['task_schedule'] = $this->input->post('message_schedule');
 			} else {
 				$this->session->set_flashdata('msg', '<div class="alert alert-danger text-center">Please Select Valid Work.</div>');
 				redirect(base_url() . 'home/add_facebook_task', 'refresh');
@@ -813,11 +876,22 @@ class Home extends CI_Controller {
 		}
 	}
 
-	// Delete facebook page 
+	// Delete facebook task 
 	public function delete_fb_task() {
 		if ($this->session->has_userdata('login')) {
 			$userId = $this->uri->segment(3);
 			$table = 'fb_task_management';
+
+			// Get posting file if exists
+			$fileExist = $this->Crud->get_posting_file_if_exists($userId);
+			if ($fileExist) {
+				$filePath = 'assets/postingFiles/' . $fileExist;
+				if (file_exists($filePath)) {
+					// Delete the file from the folder
+					unlink($filePath);
+				}
+			}
+			
 			$result = $this->Crud->deleteCommonFunction($userId, $table);
 			if($result) {
 				$this->session->set_flashdata('msg', '<div class="alert alert-success text-center">Facebook Task Deleted Successfully.</div>');
@@ -826,6 +900,21 @@ class Home extends CI_Controller {
 				$this->session->set_flashdata('msg', '<div class="alert alert-danger text-center">Facebook Task Can\'t Delete.</div>');
 				echo 0;
 			}
+		} else {
+			redirect(base_url() . 'home/login', 'refresh');
+		}
+	}
+
+	// Add facebook task page
+	public function all_report() {
+		if ($this->session->has_userdata('login')) {
+			$page['fbAllMobiles'] = $this->Crud->get_mobile_management_data();
+			$page['fbAllAccounts'] = $this->Crud->get_facebook_account_data();
+			$page['fbAllGroups'] = $this->Crud->get_facebook_group_data();
+			$page['fbAllPages'] = $this->Crud->get_facebook_page_data();
+			$page['fbAllTasks'] = $this->Crud->get_facebook_task_data();
+			$this->load->view('header');
+			$this->load->view('all_report', $page);
 		} else {
 			redirect(base_url() . 'home/login', 'refresh');
 		}

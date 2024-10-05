@@ -214,7 +214,7 @@
                 <!-- Show table list -->
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        User Permissions List
+                        User List
                     </div>
                     <div class="panel-body">
                         <div class="table-responsive">

@@ -12,7 +12,7 @@
     input[type="checkbox"] {
         width: 15px;
         height: 15px;
-        accent-color: green;
+        accent-color: lightblue;
     }
     .check-label {
         color:green;
@@ -42,7 +42,7 @@
                             <option value="video_promoting">Video Promoting</option>
                             <option value="reel_promoting">Reel Promoting</option>
                             <option value="post_promoting">Post Promoting</option>
-                            <option value="direct_message">Direct Message</option>
+                            <option value="direct_message">DM Message</option>
                         </select>
                     </div>
 
@@ -55,7 +55,7 @@
 
                         <div class="form-group">
                             <label>Select Image / Video<span style="color:#FF0000;"><sup>*</sup></span></label>
-                            <input type="file" name="file" class="form-control file">
+                            <input type="file" name="posting_file" class="form-control posting_file">
                         </div>
 
                         <div class="form-group">
@@ -210,6 +210,24 @@
                             <label class="check-label">
                                 <input type="checkbox" name="post_page" value="page" class="fb_page_list" /> Page
                             </label>
+                        </div>
+                    </div>
+
+                    <!-- Fields for Posting -->
+                    <div id="direct_message" class="form-group form-conditional" style="display:none;">
+                        <div class="form-group">
+                            <label>Write Message<span style="color:#FF0000;"><sup>*</sup></span></label>
+                            <textarea name="message" class="form-control" rows="3" placeholder="Write Message here...."></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Enter Sending Message Quantity<span style="color:#FF0000;"><sup>*</sup></span></label>
+                            <input type="number" name="message_qty" class="form-control message_qty">
+                        </div>
+
+                        <div class="form-group">
+                            <label>Publish / Schedule (Date & Time)<span style="color:#FF0000;"><sup>*</sup></span></label>
+                            <input type="datetime-local" name="message_schedule" class="form-control schedule">
                         </div>
                     </div>
 
@@ -488,6 +506,8 @@
                 $('#reel_promoting').show();
             } else if (selectedWork === 'post_promoting') {
                 $('#post_promoting').show();
+            } else if (selectedWork === 'direct_message') {
+                $('#direct_message').show();
             }
         });
 

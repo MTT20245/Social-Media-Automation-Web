@@ -53,6 +53,7 @@
                                         <th class="text-center">Created At</th>
                                         <th class="text-center">Task</th>
                                         <th class="text-center">Content</th>
+                                        <th class="text-center">DM Message</th>
                                         <th class="text-center">File Image / Video</th>
                                         <th class="text-center">Wall</th>
                                         <th class="text-center">Story</th>
@@ -61,10 +62,13 @@
                                         <th class="text-center">Like Quantity</th>
                                         <th class="text-center">Share Quantity</th>
                                         <th class="text-center">Comment Quantity</th>
+                                        <th class="text-center">Message Sending Quantity</th>
                                         <th class="text-center">Facebook Accounts</th>
                                         <th class="text-center">Facebook Groups</th>
                                         <th class="text-center">Facebook Pages</th>
                                         <th class="text-center">Publish / Schedule</th>
+                                        <th class="text-center">Status</th>
+                                        <th class="text-center">Work Completion</th>
                                         <th class="text-center">Action</th>
                                     </tr>
                                 </thead>
@@ -79,18 +83,22 @@
 										echo "<td class='date_time'>" . $createdAt . "</td>";
 										echo "<td class='task'>" . $r["task"] ."</td>";
 										echo "<td class='content'>" . $r["content"] . "</td>";
-										echo "<td class='file'>" . $r["file"] . "</td>";
+										echo "<td class='content'>" . $r["message"] . "</td>";
+										echo "<td class='file'><a href='" . base_url('assets/postingFiles/' . $r["file"]) . "' target='_blank' style='color:#428bca;'>" . $r["file"] . "</a></td>";
 										echo "<td class='wall'>" . $r["wall"] . "</td>";
 										echo "<td class='story'>" . $r["story"] . "</td>";
-										echo "<td class='link'>" . $r["link"] . "</td>";
+										echo "<td class='link'><a href='" . $r["link"] . "' target='_blank' style='color:#428bca;'>" . $r["link"] . "</a></td>";
 										echo "<td class='view_timing'>" . $r["view_timing"] . "</td>";
 										echo "<td class='like_qty'>" . $r["like_qty"] . "</td>";
 										echo "<td class='share_qty'>" . $r["share_qty"] . "</td>";
 										echo "<td class='comment_qty'>" . $r["comment_qty"] . "</td>";
+										echo "<td class='message_qty'>" . $r["message_qty"] . "</td>";
 										echo "<td class='accounts'>" . $r["accounts"] . "</td>";
 										echo "<td class='groups'>" . $r["groups"] . "</td>";
 										echo "<td class='pages'>" . $r["pages"] . "</td>";
 										echo "<td class='task_schedule'>" . $r["task_schedule"] . "</td>";
+										echo "<td class='status'>Pending</td>";
+										echo "<td class='task_schedule'>20%</td>";
 										echo "<td><a class=\"fa fa-trash-o fa-fw delcap\" href='#' title='Delete task' id='{$r['id']}'></a></td></tr>";
                                     }
                                     ?>
