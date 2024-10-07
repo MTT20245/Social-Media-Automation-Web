@@ -20,7 +20,7 @@
 <div id="page-wrapper">
     <div class="row">
         <div class="col-lg-12">
-            <h1 class="page-header">Automation Dashboard!</h1>
+            <h1 class="page-header text-primary">Automation Dashboard!</h1>
         </div>
         <div class="col-lg-12">
             <div id="reportrange" class="pull-right" style="background: #0088CC; color:#fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc">
@@ -46,7 +46,7 @@
                         </div>
                     </div>
                 </div>
-                <a href="#">
+                <a href="<?php echo base_url(); ?>home/fb_account_management">
                     <div class="panel-footer">
                         <span class="pull-left">View Details</span>
                         <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
@@ -64,13 +64,12 @@
                         </div>
                         <div class="col-xs-9 text-right">
                             <div class="huge" id="site_vis">
-
                             </div>
                             <div>Twitter</div>
                         </div>
                     </div>
                 </div>
-                <a href="#">
+                <a href="<?php echo base_url(); ?>home/other_management/Twitter">
                     <div class="panel-footer">
                         <span class="pull-left">View Details</span>
                         <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
@@ -94,7 +93,7 @@
                         </div>
                     </div>
                 </div>
-                <a href="#">
+                <a href="<?php echo base_url(); ?>home/other_management/Instagram">
                     <div class="panel-footer">
                         <span class="pull-left">View Details</span>
                         <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
@@ -116,7 +115,7 @@
                         </div>
                     </div>
                 </div>
-                <a href="#">
+                <a href="<?php echo base_url(); ?>home/other_management/Youtube">
                     <div class="panel-footer">
                         <span class="pull-left">View Details</span>
                         <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>

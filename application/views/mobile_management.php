@@ -29,7 +29,7 @@
     <div id="page-wrapper">
         <div class="row">
             <div class="col-lg-12"> 
-                <h1 class="page-header"><i class="fa fa-mobile fa-fw"></i>Mobile Management<span style="float:right;"><button class="btn btn-outline btn-primary add_new">Add Mobile</button></span></h1>
+                <h1 class="page-header text-primary"><i class="fa fa-mobile fa-fw"></i>Mobile Management<span style="float:right;"><button class="btn btn-outline btn-primary add_new">Add Mobile</button></span></h1>
                 <div id="flash-message" style="">
                     <?php echo $this->session->flashdata('msg'); ?>  
                 </div>

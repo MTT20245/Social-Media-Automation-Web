@@ -905,19 +905,101 @@ class Home extends CI_Controller {
 		}
 	}
 
-	// Add facebook task page
-	public function all_report() {
+	/** ------------------------------Other Social Media Management---------------------------- */
+	// When click on other social management then show work in progress
+	public function other_management($value)
+	{
 		if ($this->session->has_userdata('login')) {
-			$page['fbAllMobiles'] = $this->Crud->get_mobile_management_data();
-			$page['fbAllAccounts'] = $this->Crud->get_facebook_account_data();
-			$page['fbAllGroups'] = $this->Crud->get_facebook_group_data();
-			$page['fbAllPages'] = $this->Crud->get_facebook_page_data();
-			$page['fbAllTasks'] = $this->Crud->get_facebook_task_data();
 			$this->load->view('header');
-			$this->load->view('all_report', $page);
+			$page['value'] = $value;
+			$this->load->view('other_management', $page);
 		} else {
 			redirect(base_url() . 'home/login', 'refresh');
 		}
 	}
 
+		
+	/** ------------------------------All Repors---------------------------- */
+	// Report of mobiles
+	public function report_fb_mobiles() {
+		if ($this->session->has_userdata('login')) {
+			$page['fbAllMobiles'] = $this->Crud->get_mobile_management_data();
+			$this->load->view('header');
+			$this->load->view('report_fb_mobiles', $page);
+		} else {
+			redirect(base_url() . 'home/login', 'refresh');
+		}
+	}
+
+	// Report of facebook accounts
+	public function report_fb_accounts() {
+		if ($this->session->has_userdata('login')) {
+			$page['fbAllAccounts'] = $this->Crud->get_facebook_account_data();
+			$this->load->view('header');
+			$this->load->view('report_fb_accounts', $page);
+		} else {
+			redirect(base_url() . 'home/login', 'refresh');
+		}
+	}
+
+	// Report of facebook groups
+	public function report_fb_groups() {
+		if ($this->session->has_userdata('login')) {
+			$page['fbAllGroups'] = $this->Crud->get_facebook_group_data();
+			$this->load->view('header');
+			$this->load->view('report_fb_groups', $page);
+		} else {
+			redirect(base_url() . 'home/login', 'refresh');
+		}
+	}
+
+	// Report of facebook pages
+	public function report_fb_pages() {
+		if ($this->session->has_userdata('login')) {
+			$page['fbAllPages'] = $this->Crud->get_facebook_page_data();
+			$this->load->view('header');
+			$this->load->view('report_fb_pages', $page);
+		} else {
+			redirect(base_url() . 'home/login', 'refresh');
+		}
+	}
+
+	// Report of facebook tasks
+	public function report_fb_tasks() {
+		if ($this->session->has_userdata('login')) {
+			$page['fbAllTasks'] = $this->Crud->get_facebook_task_data();
+			$this->load->view('header');
+			$this->load->view('report_fb_tasks', $page);
+		} else {
+			redirect(base_url() . 'home/login', 'refresh');
+		}
+	}
+
+	/** ----------------------------------Settings-------------------------------- */
+	// settings
+	public function settings() {
+		if ($this->session->has_userdata('login')) {
+			$autoDeleteTime = $this->Crud->get_settings_data('auto_delete_report');
+			$data['autoReportDeleteTime'] = $autoDeleteTime->value;
+			$homeScrollTime = $this->Crud->get_settings_data('home_scroll_time_limit');
+			$data['homeScrollTime'] = $homeScrollTime->value;
+			$this->load->view('header');
+			$this->load->view('settings', $data);
+		} else {
+			redirect(base_url() . 'home/login', 'refresh');
+		}
+	}
+
+	// save setting
+	public function add_update_settings() {
+		$data['setting'] = $this->input->post('setting');
+		$data['value'] = $this->input->post('value');
+		$result = $this->Crud->add_update_settings($data);
+
+		if($result) {
+			echo $result;
+		} else {
+			return false;
+		}
+	}
 }

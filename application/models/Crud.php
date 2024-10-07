@@ -389,5 +389,32 @@ class Crud extends CI_Model
         }
 	} 
 
+	/** ----------------------------------Settings-------------------------------- */
+	// Get settings data
+	public function get_settings_data($setting)
+	{
+		$this->db->where('setting', $setting);
+        $this->db->select('value')->from('settings');
+		$query = $this->db->get();
+		return $query->row();
+	}
+
+	// Add update settings
+	public function add_update_settings($data) {
+		// Check if the account_id already exists
+        $this->db->where('setting', $data['setting']);
+        $query = $this->db->get('settings');
+
+        if ($query->num_rows() > 0) {
+            // If the setting already exists, update the the setting value
+            $this->db->where('setting', $data['setting']);
+            $this->db->update('settings', $data);
+			return $this->db->affected_rows();
+        } else {
+            // If the setting doesn't exist, insert setting
+			$this->db->insert('settings', $data);
+			return $this->db->affected_rows();
+        }
+	}
 
 }

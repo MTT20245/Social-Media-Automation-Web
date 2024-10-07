@@ -79,7 +79,7 @@
                         <i class="fa fa-caret-down"></i>
                     </a>
                     <ul class="dropdown-menu dropdown-alerts" style="width:360px;">
-                        <li id="appDetails"></li>
+                        <li id="appDetails"><h5 class="text-center"><i class="fa fa-bell"></i> No Notifications...</h5></li>
                     </ul>
                 </li>
                 <li class="dropdown">
@@ -150,27 +150,44 @@
                             </li>
                         <?php } if (has_permission($userPermissions, 'insta_management', 'view')) { ?>
                             <li>
-                                <a href="<?php echo base_url(); ?>home/insta_management" id="insta_management"><i class="fa fa-instagram fa-fw"></i>&nbsp; Instagram Management</a>
+                                <a href="<?php echo base_url(); ?>home/other_management/Instagram" id="insta_management"><i class="fa fa-instagram fa-fw"></i>&nbsp; Instagram Management</a>
                             </li>
                         <?php } if (has_permission($userPermissions, 'twitter_management', 'view')) { ?>
                             <li>
-                                <a href="<?php echo base_url(); ?>home/twitter_management" id="twitter_management"><i class="fa fa-twitter fa-fw"></i>&nbsp; Twitter Management</a>
+                                <a href="<?php echo base_url(); ?>home/other_management/Twitter" id="twitter_management"><i class="fa fa-twitter fa-fw"></i>&nbsp; Twitter Management</a>
                             </li>
                         <?php } if (has_permission($userPermissions, 'youtube_management', 'view')) { ?>
                             <li>
-                                <a href="<?php echo base_url(); ?>home/youtube_management" id="youtube_management"><i class="fa fa-youtube fa-fw"></i>&nbsp; Youtube Management</a>
+                                <a href="<?php echo base_url(); ?>home/other_management/Youtube" id="youtube_management"><i class="fa fa-youtube fa-fw"></i>&nbsp; Youtube Management</a>
                             </li>
                         <?php } if (has_permission($userPermissions, 'tiktok_management', 'view')) { ?>
                             <li>
-                                <a href="<?php echo base_url(); ?>home/tiktok_management" id="tiktok_management"><i class="fa fa-music fa-fw"></i>&nbsp; Tik Tok Management</a>
+                                <a href="<?php echo base_url(); ?>home/other_management/TikTok" id="tiktok_management"><i class="fa fa-music fa-fw"></i>&nbsp; Tik Tok Management</a>
                             </li>
                         <?php } if (has_permission($userPermissions, 'whatsapp_management', 'view')) { ?>
                             <li>
-                                <a href="<?php echo base_url(); ?>home/whatsapp_management" id="whatsapp_management"><i class="fa fa-comments fa-fw"></i>&nbsp; WhatsApp Management</a>
+                                <a href="<?php echo base_url(); ?>home/other_management/WhatsApp" id="whatsapp_management"><i class="fa fa-comments fa-fw"></i>&nbsp; WhatsApp Management</a>
                             </li>
                         <?php } if (has_permission($userPermissions, 'report', 'view')) { ?>
                         <li>
-                            <a href="<?php echo base_url(); ?>home/report" id="report"><i class="fa fa-file fa-fw"></i>&nbsp;Report</a>
+                            <a href="<?php echo base_url(); ?>home/report_fb_account" id="report"><i class="fa fa-file fa-fw"></i>&nbsp;Reports<span class="fa arrow"></span></a>
+                            <ul id="reportSubmenu" class="nav nav-second-level collapse">
+                                    <li>
+                                        <a href="<?php echo base_url(); ?>home/report_fb_mobiles"><i class="fa fa-mobile fa-fw"></i> Mobiles Report</a>
+                                    </li>
+                                    <li>
+                                        <a href="<?php echo base_url(); ?>home/report_fb_accounts"><i class="fa fa-facebook fa-fw"></i> Accounts Report</a>
+                                    </li>
+                                    <li>
+                                        <a href="<?php echo base_url(); ?>home/report_fb_groups"><i class="fa fa-facebook fa-fw"></i> Groups Report</a>
+                                    </li>
+                                    <li>
+                                        <a href="<?php echo base_url(); ?>home/report_fb_pages"><i class="fa fa-facebook fa-fw"></i> Pages Report</a>
+                                    </li>
+                                    <li>
+                                        <a href="<?php echo base_url(); ?>home/report_fb_tasks"><i class="fa fa-facebook fa-fw"></i> Tasks Report</a>
+                                    </li>
+                                </ul>
                         </li>
                         <?php } if (has_permission($userPermissions, 'settings', 'view')) { ?>
                         <li>
